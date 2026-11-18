@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>詩 Poemas japoneses</title>
+<style>
+:root{--bg:#faf6ef;--sf:#fff;--tx:#2a2420;--mu:#7a6f66;--ac:#b8342b;--ac2:#2b6f8f;--bd:#e6ddd0;--ok:#2e8b57;--no:#c0392b;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1b1815;--sf:#26221e;--tx:#f0e9df;--mu:#a89d91;--ac:#e8695f;--ac2:#6cb6d6;--bd:#3a342e;--ok:#5cc58a;--no:#ef7a6c}}
+:root[data-theme="dark"]{--bg:#1b1815;--sf:#26221e;--tx:#f0e9df;--mu:#a89d91;--ac:#e8695f;--ac2:#6cb6d6;--bd:#3a342e;--ok:#5cc58a;--no:#ef7a6c}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.5 "Hiragino Sans","Noto Sans JP",system-ui,sans-serif;max-width:720px;margin:auto;padding:12px 14px 40px}
+h1{font-size:20px;margin:6px 0 10px}h1 span{color:var(--ac)}
+nav{display:flex;gap:6px;margin-bottom:12px}
+button{font:inherit;color:inherit;background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:8px 12px;cursor:pointer}
+nav button{flex:1}button.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+.card{background:var(--sf);border:1px solid var(--bd);border-radius:14px;padding:14px;margin-bottom:12px}
+.mu{color:var(--mu);font-size:14px}
+.opts{display:flex;flex-wrap:wrap;gap:12px;margin:8px 0;font-size:14px}.opts label{display:flex;gap:4px;align-items:center}
+.line{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0;padding-bottom:8px;border-bottom:1px dashed var(--bd)}
+.chip{border:1px solid var(--bd);border-radius:10px;padding:4px 8px;text-align:center;background:var(--bg);min-width:40px}
+.chip.p{border-color:var(--ac);background:color-mix(in srgb,var(--ac) 12%,transparent)}
+.chip.sel{outline:2px solid var(--ac2)}
+.chip .j{font-size:24px;line-height:1.9}.chip .s{font-size:11px;color:var(--mu)}
+rt{font-size:10px;color:var(--ac2)}
+.det h3{margin:0 0 4px;font-size:22px}.tag{display:inline-block;font-size:12px;background:var(--ac2);color:#fff;border-radius:6px;padding:1px 7px;margin-right:4px}
+.tag.p{background:var(--ac)}
+.q{font-size:30px;text-align:center;margin:10px 0}
+.ans{display:grid;grid-template-columns:1fr 1fr;gap:8px}.ans button{padding:12px 6px}
+.ok{border-color:var(--ok)!important;background:color-mix(in srgb,var(--ok) 25%,transparent)}.no{border-color:var(--no)!important;background:color-mix(in srgb,var(--no) 25%,transparent)}
+.kg{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}.kg button{padding:6px 0;font-size:22px;line-height:1.2}.kg small{display:block;font-size:11px;color:var(--mu)}
+table{border-collapse:collapse;width:100%;font-size:14px}td,th{border-bottom:1px solid var(--bd);padding:6px 4px;text-align:left;vertical-align:top}
+.sc{text-align:right;font-size:14px;color:var(--mu)}
+</style></head><body>
+<h1><span>詩</span> Poemas japoneses</h1>
+<nav><button data-t="poemas">Poemas</button><button data-t="quiz">Quiz</button><button data-t="aprender">Aprender</button></nav>
+<div id="app"></div>
+<script>
+// [kanji/escritura, lectura, romaji, significado, categoría, gramática, esPartícula]
+const P=[
+{t:"古池や",a:"Matsuo Bashō (s. XVII)",tr:"Un viejo estanque: salta una rana, el sonido del agua.",l:[2,2,3],w:[
+["古池","ふるいけ","furuike","viejo estanque","Sustantivo","古い (viejo) + 池 (estanque). 古 actúa como prefijo."],
+["や","や","ya","¡ah! (pausa poética)","Partícula cortadora (kireji)","Marca una pausa y da énfasis emocional a lo anterior.",1],
+["蛙","かわず","kawazu","rana","Sustantivo","Forma poética antigua de 蛙 (かえる)."],
+["飛びこむ","とびこむ","tobikomu","saltar dentro","Verbo godan (forma diccionario)","飛ぶ (saltar/volar) + 込む (entrar)."],
+["水","みず","mizu","agua","Sustantivo",""],
+["の","の","no","de","Partícula de posesión","Une dos sustantivos: 水の音 = el sonido del agua.",1],
+["音","おと","oto","sonido","Sustantivo",""]]},
+{t:"春の海",a:"Yosa Buson (s. XVIII)",tr:"Mar de primavera: todo el día, suave y ondulante, ondulante…",l:[3,3],w:[
+["春","はる","haru","primavera","Sustantivo",""],
+["の","の","no","de","Partícula de posesión","春の海 = el mar de primavera.",1],
+["海","うみ","umi","mar","Sustantivo",""],
+["ひねもす","ひねもす","hinemosu","todo el día","Adverbio (literario)","Significa de sol a sol; palabra poética."],
+["のたりのたり","のたりのたり","notarinotari","ondulando suavemente","Onomatopeya (adverbio)","Repetición mimética: imita el vaivén lento de las olas."],
+["かな","かな","kana","¡qué…!","Partícula final (kireji)","Expresa emoción o admiración al final del haiku.",1]]},
+{t:"痩せ蛙",a:"Kobayashi Issa (s. XIX)",tr:"Rana flaca, ¡no te rindas! Issa está aquí.",l:[1,2,1,3],w:[
+["痩せ蛙","やせがえる","yasegaeru","rana flaca","Sustantivo","痩せる (adelgazar) + 蛙. かえる pasa a がえる (rendaku, sonorización)."],
+["負ける","まける","makeru","perder, rendirse","Verbo ichidan (forma diccionario)","Verbo + な forma la orden negativa."],
+["な","な","na","¡no…!","Partícula de prohibición","Forma diccionario + な = ¡no hagas…! Aquí: ¡no pierdas!",1],
+["一茶","いっさ","Issa","Issa (el poeta)","Nombre propio",""],
+["ここ","ここ","koko","aquí","Pronombre de lugar",""],
+["に","に","ni","en","Partícula de lugar","Con ある/いる marca dónde existe algo.",1],
+["あり","あり","ari","está, existe","Verbo (forma clásica de ある)","Forma literaria; hoy: ある / あります."]]},
+{t:"閑さや",a:"Matsuo Bashō (s. XVII)",tr:"Quietud: el canto de las cigarras penetra en las rocas.",l:[2,3,3],w:[
+["閑さ","しずかさ","shizukasa","quietud","Sustantivo","Adjetivo 閑か + さ (sufijo que crea sustantivos)."],
+["や","や","ya","¡ah! (pausa poética)","Partícula cortadora (kireji)","Pausa que realza la quietud.",1],
+["岩","いわ","iwa","roca","Sustantivo",""],
+["に","に","ni","en, dentro de","Partícula de destino","Marca hacia dónde va la acción: penetra en la roca.",1],
+["しみ入る","しみいる","shimiiru","penetrar, calar","Verbo godan (forma diccionario)","Acción de impregnar hondo."],
+["蝉","せみ","semi","cigarra","Sustantivo",""],
+["の","の","no","de","Partícula de posesión","蝉の声 = la voz de la cigarra.",1],
+["声","こえ","koe","voz, canto","Sustantivo",""]]}];
+const LV=["","Nivel 1 · Muy fácil","Nivel 2 · Fácil","Nivel 3 · Intermedio bajo","Nivel 4 · Intermedio","Nivel 5 · Intermedio alto","Nivel 6 · Difícil (waka clásico)"];
+const A=(lv,t,a,tr,l,ws)=>P.push({lv,t,a,tr,l,w:ws.trim().split("\n").map(s=>{const x=s.split("|");x[5]=x[5]||"";x[6]=x[4].startsWith("Part")?1:0;return x})});
+const LVT={"古池や":2,"春の海":2,"痩せ蛙":2,"閑さや":3};P.forEach(p=>{if(LVT[p.t])p.lv=LVT[p.t]});
+A(1,"咳をしても","Ozaki Hōsai (s. XX)","Aunque tosa, sigo solo.",[3,1],`
+咳|せき|seki|tos|Sustantivo|
+を|を|o|(marca objeto)|Partícula de objeto|咳をする = toser.
+しても|しても|shitemo|aunque haga|Verbo する + ても|Forma て + も = aunque.
+一人|ひとり|hitori|una persona, solo|Sustantivo|Lectura especial: ひとり.`);
+A(1,"菜の花や","Yosa Buson (s. XVIII)","Campo de colza en flor: la luna al este, el sol al oeste.",[2,4,4],`
+菜の花|なのはな|nanohana|flor de colza|Sustantivo|
+や|や|ya|¡ah!|Partícula cortadora (kireji)|Pausa poética.
+月|つき|tsuki|luna|Sustantivo|
+は|は|wa|(tema)|Partícula de tema|Se lee wa. Aquí contrasta luna y sol.
+東|ひがし|higashi|este|Sustantivo|
+に|に|ni|en|Partícula de lugar|Ubicación: en el este.
+日|ひ|hi|sol|Sustantivo|
+は|は|wa|(tema)|Partícula de tema|Contrasta con la luna.
+西|にし|nishi|oeste|Sustantivo|
+に|に|ni|en|Partícula de lugar|Ubicación: en el oeste.`);
+A(1,"雪とけて","Kobayashi Issa (s. XIX)","La nieve se derrite: el pueblo lleno de niños.",[2,3,2],`
+雪|ゆき|yuki|nieve|Sustantivo|
+とけて|とけて|tokete|derritiéndose|Verbo ichidan (forma て)|解ける + て: enlaza con lo siguiente.
+村|むら|mura|pueblo|Sustantivo|
+いっぱい|いっぱい|ippai|lleno|Adverbio|
+の|の|no|de|Partícula de modificación|Une いっぱい con 子ども.
+子ども|こども|kodomo|niños|Sustantivo|
+かな|かな|kana|¡qué…!|Partícula final (kireji)|Emoción al final del verso.`);
+A(2,"名月を","Kobayashi Issa (s. XIX)","Un niño llora pidiendo que le alcancen la luna llena.",[2,3,3],`
+名月|めいげつ|meigetsu|luna llena de otoño|Sustantivo|
+を|を|o|(objeto)|Partícula de objeto|Objeto de とる.
+とって|とって|totte|coger, alcanzar|Verbo godan (forma て)|取る + て.
+くれろ|くれろ|kurero|¡dámela!|Verbo (imperativo)|Imperativo coloquial de くれる.
+と|と|to|(cita)|Partícula de cita|Cierra lo que dice el niño.
+泣く|なく|naku|llorar|Verbo godan (forma diccionario)|Modifica a 子.
+子|こ|ko|niño|Sustantivo|
+かな|かな|kana|¡qué…!|Partícula final (kireji)|Cierre emotivo.`);
+A(3,"柿食えば","Masaoka Shiki (s. XIX)","Al comer un caqui, suena la campana: templo Hōryūji.",[2,4,1],`
+柿|かき|kaki|caqui|Sustantivo|
+食えば|くえば|kueba|si como, al comer|Verbo + ば (condicional)|食う en forma ば: cuando/si.
+鐘|かね|kane|campana|Sustantivo|
+が|が|ga|(sujeto)|Partícula de sujeto|Marca quién suena.
+鳴る|なる|naru|sonar|Verbo godan|
+なり|なり|nari|así es|Auxiliar clásico|Afirmación literaria con énfasis.
+法隆寺|ほうりゅうじ|Hōryūji|templo Hōryūji|Nombre propio|Famoso templo de Nara.`);
+A(3,"梅一輪","Hattori Ransetsu (s. XVII)","Una flor de ciruelo… y con cada flor, un poco más de calor.",[2,3,1],`
+梅|うめ|ume|ciruelo|Sustantivo|
+一輪|いちりん|ichirin|una flor|Sustantivo (contador)|輪 es el contador de flores.
+一輪|いちりん|ichirin|una flor|Sustantivo (contador)|
+ほど|ほど|hodo|tanto como|Partícula de grado|Expresa medida o proporción.
+の|の|no|de|Partícula de modificación|Une ほど con あたたかさ.
+あたたかさ|あたたかさ|atatakasa|calidez|Sustantivo|あたたかい + さ (crea sustantivos).`);
+A(3,"分け入つても","Taneda Santōka (s. XX)","Me interno y me interno: solo hay montañas verdes.",[1,1,2],`
+分け入っても|わけいっても|wakeittemo|aunque me adentre|Verbo godan + ても|分け入る (adentrarse) + ても.
+分け入っても|わけいっても|wakeittemo|aunque me adentre|Verbo godan + ても|La repetición expresa un camino sin fin.
+青い|あおい|aoi|verde, azul|Adjetivo い|青 cubre el verde natural.
+山|やま|yama|montaña|Sustantivo|`);
+A(4,"秋深き","Matsuo Bashō (s. XVII)","Otoño profundo: ¿qué estará haciendo mi vecino?",[2,4,3],`
+秋|あき|aki|otoño|Sustantivo|
+深き|ふかき|fukaki|profundo|Adjetivo い (forma clásica)|Forma clásica de 深い antes de un sustantivo.
+隣|となり|tonari|vecino|Sustantivo|
+は|は|wa|(tema)|Partícula de tema|Se lee wa.
+何|なに|nani|qué|Pronombre interrogativo|
+を|を|o|(objeto)|Partícula de objeto|Objeto de する.
+する|する|suru|hacer|Verbo irregular|
+人|ひと|hito|persona|Sustantivo|
+ぞ|ぞ|zo|(énfasis)|Partícula final arcaica|Acompaña la pregunta con énfasis.`);
+A(4,"五月雨を","Matsuo Bashō (s. XVII)","Reuniendo las lluvias de junio, ¡qué veloz el río Mogami!",[2,2,1],`
+五月雨|さみだれ|samidare|lluvias de junio|Sustantivo|Lluvias de la estación húmeda.
+を|を|o|(objeto)|Partícula de objeto|Objeto de あつめて.
+あつめて|あつめて|atsumete|reuniendo|Verbo ichidan (forma て)|集める + て.
+早し|はやし|hayashi|veloz|Adjetivo (forma clásica)|Forma clásica de 早い/速い.
+最上川|もがみがわ|Mogamigawa|río Mogami|Nombre propio|`);
+A(4,"夏草や","Matsuo Bashō (s. XVII)","Hierbas de verano: lo que queda del sueño de los guerreros.",[2,2,3],`
+夏草|なつくさ|natsukusa|hierba de verano|Sustantivo|
+や|や|ya|¡ah!|Partícula cortadora (kireji)|Pausa poética.
+兵ども|つわものども|tsuwamonodomo|los guerreros|Sustantivo|兵 + ども (plural despectivo o épico).
+が|が|ga|de (posesivo antiguo)|Partícula|Aquí actúa como の: de los guerreros.
+夢|ゆめ|yume|sueño|Sustantivo|
+の|の|no|de|Partícula de posesión|夢の跡 = huellas del sueño.
+跡|あと|ato|huellas, ruinas|Sustantivo|`);
+A(5,"朝顔に","Kaga no Chiyo-ni (s. XVIII)","La campanilla se enredó en el cubo del pozo: pido agua prestada.",[2,2,1],`
+朝顔|あさがお|asagao|campanilla (flor)|Sustantivo|
+に|に|ni|por, a manos de|Partícula de agente|Con pasiva marca quién actúa.
+釣瓶|つるべ|tsurube|cubo del pozo|Sustantivo|
+とられて|とられて|torarete|siendo tomado|Verbo pasivo (forma て)|取る → 取られる (pasiva) + て.
+もらい水|もらいみず|moraimizu|agua pedida|Sustantivo|もらう (recibir) + 水.`);
+A(5,"旅に病んで","Matsuo Bashō (s. XVII)","Enfermo en el viaje, mi sueño corre por campos secos.",[3,4,1],`
+旅|たび|tabi|viaje|Sustantivo|
+に|に|ni|en, durante|Partícula de circunstancia|Marca la situación: durante el viaje.
+病んで|やんで|yande|enfermando|Verbo godan (forma て)|病む + て.
+夢|ゆめ|yume|sueño|Sustantivo|
+は|は|wa|(tema)|Partícula de tema|Se lee wa.
+枯野|かれの|kareno|campo seco|Sustantivo|
+を|を|o|por|Partícula de recorrido|Con verbos de movimiento: espacio recorrido.
+かけ廻る|かけめぐる|kakemeguru|correr por todas partes|Verbo godan|`);
+A(5,"荒海や","Matsuo Bashō (s. XVII)","Mar embravecido: sobre Sado se extiende la Vía Láctea.",[2,3,1],`
+荒海|あらうみ|araumi|mar embravecido|Sustantivo|
+や|や|ya|¡ah!|Partícula cortadora (kireji)|Pausa poética.
+佐渡|さど|Sado|isla de Sado|Nombre propio|
+に|に|ni|sobre, en|Partícula de lugar|Dónde se tiende la Vía Láctea.
+横たふ|よこたふ|yokotafu|tenderse|Verbo (forma clásica)|Forma antigua de 横たわる.
+天の河|あまのがわ|amanogawa|Vía Láctea|Sustantivo|`);
+A(6,"田子の浦に","Yamabe no Akahito (s. VIII)","Salgo a la costa de Tago y miro: sobre la cima del Fuji cae nieve blanquísima.",[2,2,1,4,3],`
+田子の浦|たごのうら|Tago no Ura|costa de Tago|Nombre propio|
+に|に|ni|en|Partícula de lugar|Lugar de la acción.
+うち出でて|うちいでて|uchiidete|salir a campo abierto|Verbo (forma て clásica)|うち (prefijo) + 出づ + て.
+みれば|みれば|mireba|al mirar|Verbo + ば|見る en forma ば: cuando miro.
+白妙の|しろたえの|shirotae no|blanquísimo|Epíteto poético|Adjetivo fijo para blanco. Aquí califica la nieve.
+富士|ふじ|Fuji|Fuji|Nombre propio|
+の|の|no|de|Partícula de posesión|
+高嶺|たかね|takane|alta cima|Sustantivo|
+に|に|ni|en|Partícula de lugar|
+雪|ゆき|yuki|nieve|Sustantivo|
+は|は|wa|(tema)|Partícula de tema|
+降りつつ|ふりつつ|furitsutsu|sigue cayendo|Verbo + つつ|つつ indica acción continuada.`);
+A(6,"天の原","Abe no Nakamaro (s. VIII)","Alzo la vista a la bóveda del cielo: ¡es la misma luna que salió sobre el monte Mikasa, en Kasuga!",[1,1,2,2,3],`
+天の原|あまのはら|amanohara|bóveda del cielo|Sustantivo|
+ふりさけ見れば|ふりさけみれば|furisakemireba|al alzar la vista a lo lejos|Verbo + ば|ふりさけ見る + ば: cuando miro.
+春日|かすが|Kasuga|Kasuga (lugar)|Nombre propio|
+なる|なる|naru|que está en|Partícula clásica (locativa)|Equivale a にある.
+三笠の山|みかさのやま|Mikasa no yama|monte Mikasa|Nombre propio|
+に|に|ni|sobre|Partícula de lugar|
+出でし|いでし|ideshi|salió|Verbo (pasado clásico)|出づ + し (pasado antiguo, hoy た).
+月|つき|tsuki|luna|Sustantivo|
+かも|かも|kamo|¡cómo…!|Partícula final|Exclamación emotiva.`);
+A(6,"花の色は","Ono no Komachi (s. IX)","El color de las flores se ha desvanecido en vano, mientras yo pasaba la vida mirando las largas lluvias.",[4,1,1,4,3],`
+花|はな|hana|flor|Sustantivo|
+の|の|no|de|Partícula de posesión|
+色|いろ|iro|color|Sustantivo|
+は|は|wa|(tema)|Partícula de tema|
+うつりにけりな|うつりにけりな|utsurinikerina|¡se ha desvanecido!|Verbo + auxiliares clásicos|うつる + に + けり (descubrimiento) + な (exclamación).
+いたづらに|いたづらに|itazura ni|en vano|Adverbio|
+わが身|わがみ|wagami|yo misma|Sustantivo|わ (mi) + 身 (cuerpo).
+世|よ|yo|mundo, vida|Sustantivo|
+に|に|ni|en|Partícula de lugar|
+ふる|ふる|furu|pasar / llover|Verbo|Juego de palabras: 経る (pasar el tiempo) y 降る (llover).
+ながめ|ながめ|nagame|contemplar / lluvias largas|Sustantivo|Juego: 眺め (contemplación) y 長雨 (lluvia larga).
+せし|せし|seshi|hice|Verbo する (pasado clásico)|
+まに|まに|mani|mientras|Sustantivo + に|間 (lapso) + に: durante.`);
+P.sort((a,b)=>a.lv-b.lv);
+const PART=[["の","no","Posesión / une sustantivos","水の音 (el sonido del agua)"],["に","ni","Lugar de existencia, destino, tiempo","ここにあり (está aquí)"],["や","ya","Pausa poética con énfasis (kireji)","古池や (¡ah, el viejo estanque!)"],["かな","kana","Emoción al final del verso","ひねもすのたりのたりかな"],["な","na","Orden negativa tras verbo","負けるな (¡no pierdas!)"],["は","wa","Marca el tema","私は学生です (yo soy estudiante)"],["を","o","Objeto directo","水を飲む (beber agua)"],["が","ga","Sujeto","雨が降る (llueve)"],["で","de","Lugar de acción / medio","学校で勉強する"],["と","to","Y / con / cita","友達と行く (ir con un amigo)"],["も","mo","También","私も (yo también)"],["へ","e","Dirección","日本へ行く"]];
+const KJ=[["古","ふる-い / コ","viejo"],["池","いけ / チ","estanque"],["蛙","かわず・かえる","rana"],["飛","と-ぶ / ヒ","volar, saltar"],["水","みず / スイ","agua"],["音","おと / オン","sonido"],["春","はる / シュン","primavera"],["海","うみ / カイ","mar"],["痩","や-せる","adelgazar"],["負","ま-ける / フ","perder"],["閑","しず-か / カン","quietud"],["岩","いわ / ガン","roca"],["蝉","せみ","cigarra"],["声","こえ / セイ","voz"],["茶","チャ","té (en 一茶)"],["月","つき / ゲツ","luna"],["雪","ゆき / セツ","nieve"],["山","やま / サン","montaña"],["花","はな / カ","flor"],["青","あお-い / セイ","azul, verde"],["夏","なつ / カ","verano"],["秋","あき / シュウ","otoño"],["旅","たび / リョ","viaje"],["夢","ゆめ / ム","sueño"],["村","むら / ソン","pueblo"],["鐘","かね / ショウ","campana"],["東","ひがし / トウ","este"],["西","にし / セイ","oeste"],["子","こ / シ","niño"]];
+const HIRA="あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをん";
+const ROMA="a i u e o ka ki ku ke ko sa shi su se so ta chi tsu te to na ni nu ne no ha hi fu he ho ma mi mu me mo ya yu yo ra ri ru re ro wa wo n".split(" ");
+const WORDS=[],seen={};P.forEach(p=>p.w.forEach(x=>{if(!x[6]&&!seen[x[0]]){seen[x[0]]=1;WORDS.push(x)}}));
+const hasK=s=>/[\u4e00-\u9fff]/.test(s);
+const R=(s,r,on)=>on&&hasK(s)?`<ruby>${s}<rt>${r}</rt></ruby>`:s;
+const sh=a=>a.map(x=>[Math.random(),x]).sort((a,b)=>a[0]-b[0]).map(x=>x[1]);
+const $=id=>document.getElementById(id);
+let tab="poemas",pi=0,sel=null,o={f:true,r:false,m:false,t:true},kata=false,mode="sig",sc=[0,0],q=null;
+const app=$("app");
+document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>{tab=b.dataset.t;draw()});
+function draw(){document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("on",b.dataset.t===tab));({poemas,quiz,aprender})[tab]()}
+function poemas(){
+const p=P[pi];let h=`<div class="card"><div class="opts">${P.map((x,i)=>`<button class="${i==pi?"on":""}" data-p="${i}">${i+1}</button>`).join("")}</div>
+<h2 style="margin:6px 0">${pi+1}. ${p.t}</h2><div class="mu">${LV[p.lv]} · ${p.a}</div>
+<div class="opts">${[["f","Furigana"],["r","Romaji"],["m","Significados"],["t","Traducción"]].map(([k,n])=>`<label><input type="checkbox" data-o="${k}" ${o[k]?"checked":""}>${n}</label>`).join("")}</div>`;
+let i=0;p.l.forEach(n=>{h+=`<div class="line">`;for(let j=0;j<n;j++,i++){const x=p.w[i];h+=`<div class="chip ${x[6]?"p":""} ${sel===i?"sel":""}" data-w="${i}"><div class="j">${R(x[0],x[1],o.f)}</div>${o.r?`<div class="s">${x[2]}</div>`:""}${o.m?`<div class="s">${x[3]}</div>`:""}</div>`}h+=`</div>`});
+if(o.t)h+=`<p><b>Traducción:</b> ${p.tr}</p>`;
+h+=`<p class="mu">Las partículas están resaltadas en rojo. Toca una palabra para ver su análisis.</p></div>`;
+if(sel!==null){const x=p.w[sel];h+=`<div class="card det"><h3>${R(x[0],x[1],true)} <span class="mu">${x[1]} · ${x[2]}</span></h3><p><span class="tag ${x[6]?"p":""}">${x[4]}</span></p><p><b>Significado:</b> ${x[3]}</p>${x[5]?`<p><b>Gramática:</b> ${x[5]}</p>`:""}${hasK(x[0])?`<p class="mu"><b>Kanji:</b> ${[...x[0]].filter(hasK).map(c=>{const k=KJ.find(z=>z[0]==c);return k?`${c} (${k[2]}; ${k[1]})`:c}).join(" · ")}</p>`:""}</div>`}
+app.innerHTML=h;
+app.querySelectorAll("[data-p]").forEach(b=>b.onclick=()=>{pi=+b.dataset.p;sel=null;poemas()});
+app.querySelectorAll("[data-o]").forEach(b=>b.onchange=()=>{o[b.dataset.o]=b.checked;poemas()});
+app.querySelectorAll("[data-w]").forEach(b=>b.onclick=()=>{sel=+b.dataset.w;poemas()});}
+function newQ(){
+if(mode==="sig"){const w=WORDS[Math.random()*WORDS.length|0];q={q:`<div class="q">${R(w[0],w[1],true)}</div><div class="mu" style="text-align:center">${w[2]}: ¿qué significa?</div>`,c:w[3],o:sh([w[3],...sh(WORDS.filter(x=>x!==w)).slice(0,3).map(x=>x[3])])}}
+else if(mode==="lec"){const L=WORDS.filter(x=>hasK(x[0])),w=L[Math.random()*L.length|0];q={q:`<div class="q">${w[0]}</div><div class="mu" style="text-align:center">${w[3]}: ¿cómo se lee?</div>`,c:w[1],o:sh([w[1],...sh(L.filter(x=>x!==w)).slice(0,3).map(x=>x[1])])}}
+else if(mode==="kan"){const k=KJ[Math.random()*KJ.length|0];q={q:`<div class="q">${k[0]}</div><div class="mu" style="text-align:center">¿Qué significa este kanji?</div>`,c:k[2],o:sh([k[2],...sh(KJ.filter(x=>x!==k)).slice(0,3).map(x=>x[2])])}}
+else{const PP=P.filter(z=>z.w.some(y=>y[6])),p=PP[Math.random()*PP.length|0],ix=p.w.map((x,i)=>x[6]?i:-1).filter(i=>i>=0),t=ix[Math.random()*ix.length|0],c=p.w[t][0];
+q={q:`<div class="q">${p.w.map((x,i)=>i===t?"＿＿":x[0]).join(" ")}</div><div class="mu" style="text-align:center">${p.tr}<br>${p.w[t][5]?"Pista: "+p.w[t][5]:""}</div>`,c,o:sh([c,...sh(["の","に","や","かな","な","は","を","が","で","と"].filter(x=>x!==c)).slice(0,3)])}}}
+function quiz(){
+if(!q)newQ();
+const M=[["sig","Significado"],["lec","Lectura"],["par","Partículas"],["kan","Kanji"]];
+app.innerHTML=`<div class="card"><div class="opts">${M.map(([k,n])=>`<button class="${k==mode?"on":""}" data-m="${k}">${n}</button>`).join("")}</div><div class="sc">Aciertos: ${sc[0]} / ${sc[1]}</div>${q.q}<div class="ans">${q.o.map(x=>`<button data-a="${x}">${x}</button>`).join("")}</div><div id="fb" class="mu" style="margin-top:10px"></div></div>`;
+app.querySelectorAll("[data-m]").forEach(b=>b.onclick=()=>{mode=b.dataset.m;q=null;quiz()});
+app.querySelectorAll("[data-a]").forEach(b=>b.onclick=()=>{if(q.done)return;q.done=1;sc[1]++;const good=b.dataset.a===q.c;if(good)sc[0]++;
+app.querySelectorAll("[data-a]").forEach(x=>{if(x.dataset.a===q.c)x.classList.add("ok")});if(!good)b.classList.add("no");
+$("fb").innerHTML=(good?"¡Correcto! ":"Respuesta: <b>"+q.c+"</b>. ")+`<button id="nx">Siguiente</button>`;$("nx").onclick=()=>{q=null;quiz()}})}
+function aprender(){
+const conv=c=>kata?String.fromCharCode(c.charCodeAt(0)+96):c;
+app.innerHTML=`<div class="card"><b>Kana</b> <button id="kt" style="float:right">${kata?"Ver hiragana":"Ver katakana"}</button><p class="mu">Toca un carácter para ver su romaji. 46 sílabas básicas.</p><div class="kg">${[...HIRA].map((c,i)=>`<button data-r="${i}">${conv(c)}<small>${ROMA[i]}</small></button>`).join("")}</div></div>
+<div class="card"><b>Partículas</b><table>${PART.map(x=>`<tr><td style="font-size:20px">${x[0]}<div class="mu">${x[1]}</div></td><td>${x[2]}<div class="mu">${x[3]}</div></td></tr>`).join("")}</table></div>
+<div class="card"><b>Kanji de los poemas</b><table>${KJ.map(x=>`<tr><td style="font-size:24px">${x[0]}</td><td>${x[2]}<div class="mu">${x[1]}</div></td></tr>`).join("")}</table><p class="mu">Lecturas: en minúscula = kun (japonesa); en katakana = on (china).</p></div>
+<div class="card"><b>Vocabulario</b><table>${WORDS.map(x=>`<tr><td>${R(x[0],x[1],true)}<div class="mu">${x[2]}</div></td><td>${x[3]}<div class="mu">${x[4]}</div></td></tr>`).join("")}</table></div>`;
+$("kt").onclick=()=>{kata=!kata;aprender()};}
+draw();
+</script></body></html>

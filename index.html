@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#12161B"><link rel="icon" href="icon-192.png"><title>Nihongo: aprende japonés</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@600&family=Zen+Kaku+Gothic+New:wght@400;700&display=swap">
+<style>
+:root{--bg:#F2F3EF;--sf:#FFFFFF;--tx:#1B2530;--mu:#667180;--ac:#264A6B;--on:#FFFFFF;--sh:#C8432B;--ok:#2F7D5B;--bd:#DADDD6;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12161B;--sf:#1B2129;--tx:#E8EBEE;--mu:#98A3B0;--ac:#8DB4DB;--on:#12161B;--sh:#E0705A;--ok:#5BBE95;--bd:#2A323C;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#12161B;--sf:#1B2129;--tx:#E8EBEE;--mu:#98A3B0;--ac:#8DB4DB;--on:#12161B;--sh:#E0705A;--ok:#5BBE95;--bd:#2A323C;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.55 "Zen Kaku Gothic New","Hiragino Sans","Noto Sans JP",system-ui,sans-serif}
+main{max-width:720px;margin:0 auto;padding:20px 16px 96px}
+h1{font:600 34px/1.2 "Shippori Mincho","Hiragino Mincho ProN",serif;margin:4px 0 2px}
+h2{font-size:18px;margin:22px 0 10px}h3{font-size:16px;margin:0 0 6px}
+p{margin:0 0 10px}.mu{color:var(--mu);font-size:14px}
+.card{background:var(--sf);border:1px solid var(--bd);border-radius:14px;padding:16px;margin:0 0 12px}
+.row{display:flex;gap:10px;align-items:center;justify-content:space-between}
+.bar{height:8px;background:var(--bd);border-radius:6px;overflow:hidden}.bar i{display:block;height:100%;background:var(--ac);transition:width .5s}
+button{font:inherit;color:inherit;cursor:pointer}
+.btn{background:var(--ac);color:var(--on);border:0;border-radius:10px;padding:12px 18px;font-weight:700;width:100%;margin-top:8px}
+.btn.alt{background:transparent;color:var(--tx);border:1px solid var(--bd)}
+button:focus-visible{outline:3px solid var(--sh);outline-offset:2px}
+.big{font:600 72px/1.1 "Shippori Mincho","Hiragino Mincho ProN",serif;text-align:center;margin:12px 0}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.opt{background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:14px 8px;font-size:18px;min-height:54px}
+.opt.ok{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 18%,var(--sf))}
+.opt.no{border-color:var(--sh);background:color-mix(in srgb,var(--sh) 16%,var(--sf))}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:8px}
+.tile{background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:10px 4px;text-align:center}
+.tile b{display:block;font:600 34px/1.2 "Shippori Mincho",serif}
+.lsn{display:flex;gap:12px;align-items:center;width:100%;text-align:left;background:var(--sf);border:1px solid var(--bd);border-radius:12px;padding:12px 14px;margin-bottom:8px}
+.lsn[disabled]{opacity:.45;cursor:not-allowed}
+.dot{width:34px;height:34px;border-radius:50%;border:2px solid var(--bd);display:grid;place-items:center;font-weight:700;flex:none}
+.dot.d{background:var(--ok);border-color:var(--ok);color:var(--on)}
+.f{background:var(--bg);border-left:3px solid var(--sh);padding:8px 12px;font-weight:700}
+.ex{border-left:3px solid var(--ac);padding:2px 12px;margin:8px 0;font-size:18px}.ex span{display:block;font-size:14px;color:var(--mu)}
+nav{position:fixed;left:0;right:0;bottom:0;display:flex;background:var(--sf);border-top:1px solid var(--bd);padding-bottom:env(safe-area-inset-bottom,0px)}
+nav button{flex:1;background:none;border:0;padding:13px 2px;font-size:13px;color:var(--mu);position:relative}
+nav button.on{color:var(--tx);font-weight:700;box-shadow:inset 0 3px var(--sh)}
+nav em{position:absolute;top:6px;margin-left:2px;background:var(--sh);color:var(--on);border-radius:9px;font:700 11px/1 inherit;padding:3px 5px;font-style:normal}
+.toast{position:fixed;left:50%;bottom:calc(76px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);background:var(--tx);color:var(--bg);padding:10px 16px;border-radius:10px;opacity:0;transition:.3s;pointer-events:none;z-index:9;max-width:90%}
+.toast.s{opacity:1;transform:translate(-50%,0)}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}.cal i{aspect-ratio:1;border-radius:5px;background:var(--bd)}.cal i.a{background:var(--ac)}
+.bars{display:flex;align-items:flex-end;gap:4px;height:90px}.bars i{flex:1;background:var(--ac);border-radius:3px 3px 0 0;min-height:2px}
+.pop{animation:pop .5s}@keyframes pop{from{transform:scale(.6);opacity:0}}
+.ck{color:var(--ok);font-weight:700}canvas{width:100%;max-width:300px;aspect-ratio:1;touch-action:none;background:var(--sf);border:1px solid var(--bd);border-radius:12px;display:block;margin:8px auto}.msg{padding:10px 12px;border-radius:12px;margin:0 0 8px;max-width:88%;white-space:pre-wrap}.msg.u{background:var(--ac);color:var(--on);margin-left:auto}.msg.a{background:var(--sf);border:1px solid var(--bd)}.tk{background:none;border:0;border-bottom:2px dotted var(--sh);padding:0 1px;font:inherit;color:inherit;cursor:pointer}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style></head><body>
+<main id="m"></main><nav id="n"></nav><div id="t" class="toast" role="status"></div>
+<script>
+const KEY="nihongo-v1",$=s=>document.querySelector(s);
+const HS="あa いi うu えe おo かka きki くku けke こko さsa しshi すsu せse そso たta ちchi つtsu てte とto なna にni ぬnu ねne のno はha ひhi ふfu へhe ほho まma みmi むmu めme もmo やya ゆyu よyo らra りri るru れre ろro わwa をwo んn".split(" ");
+const KANA=HS.map(s=>({h:s[0],r:s.slice(1)})),kat=c=>[...c].map(x=>String.fromCharCode(x.charCodeAt(0)+96)).join('');
+const RN=["Vocales","Fila K","Fila S","Fila T","Fila N","Fila H","Fila M","Fila Y","Fila R","Fila W y N"],RS=[5,5,5,5,5,5,5,3,5,3];
+const VOC=[
+{t:"Saludos y básicos",w:[["おはよう","おはよう","buenos días","expresión","おはよう、たなかさん。","Buenos días, Tanaka."],["こんにちは","こんにちは","hola","expresión","こんにちは、はじめまして。","Hola, mucho gusto."],["ありがとう","ありがとう","gracias","expresión","どうもありがとう。","Muchas gracias."],["はい","はい","sí","expresión","はい、わかりました。","Sí, entendido."],["いいえ","いいえ","no","expresión","いいえ、だいじょうぶです。","No, estoy bien."],["すみません","すみません","disculpe","expresión","すみません、もういちど。","Perdón, otra vez por favor."],["私","わたし","yo","pronombre","わたしはマリアです。","Yo soy María."],["名前","なまえ","nombre","sustantivo","なまえはなんですか。","¿Cómo te llamas?"]]},
+{t:"Personas y cosas",w:[["水","みず","agua","sustantivo","みずをください。","Agua, por favor."],["ご飯","ごはん","comida, arroz","sustantivo","ごはんをたべます。","Como arroz."],["本","ほん","libro","sustantivo","ほんをよみます。","Leo un libro."],["学生","がくせい","estudiante","sustantivo","わたしはがくせいです。","Soy estudiante."],["先生","せんせい","profesor","sustantivo","かれはせんせいです。","Él es profesor."],["猫","ねこ","gato","sustantivo","ねこがすきです。","Me gustan los gatos."],["犬","いぬ","perro","sustantivo","いぬはいえにいます。","El perro está en casa."],["家","いえ","casa","sustantivo","いえにかえります。","Vuelvo a casa."]]},
+{t:"Acciones y descripciones",w:[["食べる","たべる","comer","verbo","さかなをたべる。","Como pescado."],["飲む","のむ","beber","verbo","おちゃをのむ。","Bebo té."],["行く","いく","ir","verbo","がっこうへいく。","Voy a la escuela."],["見る","みる","ver","verbo","テレビをみる。","Veo televisión."],["大きい","おおきい","grande","adjetivo い","おおきいいえです。","Es una casa grande."],["小さい","ちいさい","pequeño","adjetivo い","ちいさいねこです。","Es un gato pequeño."],["静か","しずか","tranquilo","adjetivo な","しずかなまちです。","Es un pueblo tranquilo."],["好き","すき","que gusta","adjetivo な","いぬがすきです。",'Me gustan los perros.']]},{t:'Familia y lugares',w:[['母','はは','mi madre','sustantivo','はははせんせいです。','Mi madre es profesora.'],['父','ちち','mi padre','sustantivo','ちちはいえにいます。','Mi padre está en casa.'],['友達','ともだち','amigo','sustantivo','ともだちとはなします。','Hablo con un amigo.'],['学校','がっこう','escuela','sustantivo','がっこうにいきます。','Voy a la escuela.'],['駅','えき','estación','sustantivo','えきはどこですか。','¿Dónde está la estación?'],['トイレ','トイレ','baño','sustantivo','トイレはあそこです。','El baño está allá.'],['どこ','どこ','¿dónde?','pregunta','ここはどこですか。','¿Dónde estamos?'],['何','なに','¿qué?','pregunta','これはなんですか。','¿Qué es esto?']]},{t:'Tiempo y comida',w:[['今日','きょう','hoy','tiempo','きょうはあついです。','Hoy hace calor.'],['明日','あした','mañana','tiempo','あしたがっこうにいきます。','Mañana voy a la escuela.'],['今','いま','ahora','tiempo','いまなんじですか。','¿Qué hora es?'],['お茶','おちゃ','té','sustantivo','おちゃをください。','Té, por favor.'],['パン','パン','pan','sustantivo','パンをたべます。','Como pan.'],['魚','さかな','pescado','sustantivo','さかながすきです。','Me gusta el pescado.'],['買う','かう','comprar','verbo','パンをかいます。','Compro pan.'],['話す','はなす','hablar','verbo','ともだちとはなす。','Hablo con un amigo.']]}];
+const GR=[
+{t:"は y です: «A es B»",x:"<p>は marca el <b>tema</b> de la oración y se lee <b>wa</b>. です cierra la frase con cortesía y funciona como «ser».</p><p class=f>A は B です</p><p>Negativo cortés: ではありません.</p><p class=mu>Error frecuente: leer は como «ha». Como partícula siempre es «wa».</p>",ex:[["わたしはがくせいです。","Yo soy estudiante."],["これはほんです。","Esto es un libro."]],q:[["わたし＿がくせいです。",["は","を","に","で"],"は","は marca el tema: «yo»."],["¿Cómo se lee は en これはほんです?",["wa","ha","ba","no"],"wa","Como partícula, は se lee wa."],["«Él es profesor»",["かれはせんせいです。","かれをせんせいです。","かれにせんせいです。"],"かれはせんせいです。","Tema + は + sustantivo + です."],["Negativo de がくせいです",["がくせいではありません","がくせいですない","がくせいでした"],"がくせいではありません","です pasa a ではありません."]]},
+{t:"を: el objeto",x:"<p>を (se lee <b>o</b>) marca el <b>objeto directo</b>: lo que recibe la acción.</p><p class=f>Objeto を Verbo</p><p>Los verbos corteses terminan en ます: たべる → たべます.</p>",ex:[["みずをのみます。","Bebo agua."],["ほんをよみます。","Leo un libro."]],q:[["みず＿のみます。",["を","は","に","の"],"を","El agua es lo que se bebe: objeto directo."],["ごはん＿たべます。",["を","で","へ","と"],"を","Lo que se come es el objeto."],["ほんをよみます significa…",["Leo un libro","Voy al libro","Estoy en el libro"],"Leo un libro","を + よみます (leer)."],["Forma ます de たべる",["たべます","たべるます","たべです"],"たべます","Se quita る y se añade ます."]]},
+{t:"に y で: lugares",x:"<p><b>に</b>: destino, hora exacta y lugar donde algo existe (います, あります).</p><p><b>で</b>: lugar donde ocurre una acción, o medio.</p><p class=f>Lugar に いきます / Lugar で Verbo</p>",ex:[["がっこうにいきます。","Voy a la escuela."],["レストランでたべます。","Como en el restaurante."]],q:[["がっこう＿いきます。",["に","で","を","と"],"に","Destino de un movimiento: に."],["レストラン＿ごはんをたべます。",["で","に","は","の"],"で","Lugar donde ocurre la acción: で."],["ねこはいえ＿います。",["に","で","を","も"],"に","Existencia (います) usa に."],["しちじ＿おきます。",["に","で","を","が"],"に","Las horas exactas llevan に."]]},
+{t:"Adjetivos い y な",x:"<p>Los adjetivos <b>い</b> terminan en い (おおきい). Los <b>な</b> necesitan な ante un sustantivo (しずかなまち).</p><p class=f>Negativo い: quita い y añade くない</p><p class=mu>Ojo: きれい termina en い pero es un adjetivo な.</p>",ex:[["おおきいいえです。","Es una casa grande."],["しずかなまちです。","Es un pueblo tranquilo."]],q:[["しずか＿まち",["な","の","が","い"],"な","しずか es adjetivo な."],["«Gato pequeño»",["ちいさいねこ","ちいさくねこ","ちいさのねこ"],"ちいさいねこ","El adjetivo い va directo ante el sustantivo."],["Negativo de たかい (caro)",["たかくない","たかじゃない","たかいくない"],"たかくない","Se cambia い por くない."],["きれい (bonito) es un adjetivo…",["tipo な","tipo い"],"tipo な",'Termina en い, pero es な: きれいなひと.']]},{t:'Verbos en ます: presente y pasado',x:'<p>Forma cortés: <b>ます</b> (presente o futuro), <b>ません</b> (negativo), <b>ました</b> (pasado) y <b>ませんでした</b> (pasado negativo).</p><p class=f>たべます, たべません, たべました, たべませんでした</p>',ex:[['あさごはんをたべました。','Desayuné.'],['おちゃをのみません。','No bebo té.']],q:[['«No como pescado»',['さかなをたべません','さかなをたべました','さかなをたべます'],'さかなをたべません','ません niega el presente.'],['Pasado de いきます',['いきました','いきません','いきましょう'],'いきました','ます pasa a ました.'],['«Ayer vi televisión»',['きのうテレビをみました','きのうテレビをみます','きのうテレビをみません'],'きのうテレビをみました','Ayer es pasado: ました.'],['Pasado negativo de のみます',['のみませんでした','のみました','のみません'],'のみませんでした','ませんでした significa «no hice».']]},{t:'も, と, の y から',x:'<p><b>も</b> = también. <b>と</b> = y, con. <b>の</b> = de (posesión). <b>から</b> = desde.</p><p class=f>わたしの + sustantivo / A と B / A も</p>',ex:[['わたしのほんです。','Es mi libro.'],['ともだちとたべます。','Como con un amigo.']],q:[['«Yo también soy estudiante»: わたし＿がくせいです。',['も','は','の','と'],'も','も significa «también».'],['«Mi libro»: わたし＿ほん',['の','と','も','で'],'の','の indica posesión.'],['«Con un amigo»: ともだち＿いきます。',['と','を','の','も'],'と','と significa «con».'],['«Desde las nueve»: くじ＿',['から','まで','の','を'],'から','から significa «desde».']]},{t:'Forma て: unir acciones',x:'<p>La forma て une acciones y es la base de muchas estructuras. Verbos en る (como たべる): quita る y añade て. Verbos en う, つ, る: って. En む, ぶ, ぬ: んで. En く: いて. La excepción es いく → いって.</p><p class=f>たべる→たべて / のむ→のんで / かく→かいて / いく→いって</p>',ex:[['ごはんをたべて、がっこうにいきます。','Como y luego voy a la escuela.'],['ともだちとはなして、かえります。','Hablo con un amigo y vuelvo.']],q:[['Forma て de たべる',['たべて','たべって','たべいて'],'たべて','Verbo en る: quita る y añade て.'],['Forma て de のむ',['のんで','のみて','のって'],'のんで','む cambia a んで.'],['Forma て de かく',['かいて','かって','かんで'],'かいて','く cambia a いて.'],['Forma て de いく (excepción)',['いって','いいて','いんで'],'いって','いく es irregular: いって.']]},{t:'Pedir y desear: てください y たい',x:'<p><b>～てください</b> = por favor, haz… (forma て + ください). <b>～たい</b> = quiero… (raíz de ます + たい).</p><p class=f>みてください / たべたい</p><p>Para たい quita ます: たべます → たべたい.</p>',ex:[['ここにかいてください。','Escriba aquí, por favor.'],['みずがのみたいです。','Quiero beber agua.']],q:[['«Por favor, mire»: み＿ください。',['て','た','ます','たい'],'て','Forma て + ください.'],['«Quiero comer»',['たべたい','たべてい','たべます'],'たべたい','Raíz de ます + たい.'],['«Quiero ir»: ¿cómo se forma?',['いき + たい','いって + たい','いく + たい'],'いき + たい','Se usa la raíz de ます (いき).'],['«Espere, por favor»: ま＿ください。',['って','いて','んで'],'って','まつ → まって (つ pasa a って).']]},{t:'N4: forma informal',x:'<p>Entre amigos se usa la forma informal. El presente es la forma de diccionario (たべる, のむ, いく). El pasado cambia て→た y で→だ.</p><p class=f>たべます→たべる / たべました→たべた / たべません→たべない</p>',ex:[['ごはんをたべた。','Comí.'],['テレビをみない。','No veo televisión.']],q:[['Informal de たべます',['たべる','たべた','たべない'],'たべる','Presente informal = forma de diccionario.'],['Pasado informal de のむ',['のんだ','のんで','のみた'],'のんだ','のんで pasa a のんだ.'],['Negativo informal de みる',['みない','みません','みなかった'],'みない','Verbo en る: quita る y añade ない.'],['Pasado informal de いく',['いった','いんだ','いきた'],'いった','Irregular, igual que いって.']]},{t:'N4: ている, estar haciendo',x:'<p>Forma て + いる expresa una acción en curso o un estado resultante.</p><p class=f>たべている = estoy comiendo / すんでいる = vivo en</p>',ex:[['いまごはんをたべています。','Ahora estoy comiendo.'],['とうきょうにすんでいます。','Vivo en Tokio.']],q:[['«Estoy leyendo»: よんで＿',['います','ください','たい','ました'],'います','Forma て + います.'],['«Estoy bebiendo té»',['おちゃをのんでいます','おちゃをのみています','おちゃをのむています'],'おちゃをのんでいます','のむ pasa a のんで + います.'],['«Vivo en Tokio»: すんで＿',['います','あります','です'],'います','Estado resultante: すんでいます.'],['Negativo de たべています',['たべていません','たべません','たべていない です'],'たべていません','います pasa a いません.']]},{t:'N4: condicional たら',x:'<p>Pasado informal + ら significa «si» o «cuando».</p><p class=f>たべた→たべたら / のんだ→のんだら / いった→いったら</p>',ex:[['あめがふったら、いきません。','Si llueve, no voy.'],['おわったら、でんわします。','Cuando termine, llamaré.']],q:[['«Si como»: たべ＿',['たら','ば','ない','て'],'たら','たべた + ら.'],['たら de のむ',['のんだら','のむたら','のんでら'],'のんだら','のんだ + ら.'],['«Si voy»: い＿',['ったら','いたら','んだら'],'ったら','いく, いった, いったら.'],['«Si llueve, no voy»: あめがふ＿、いきません。',['ったら','んだら','いたら'],'ったら','ふる, ふった, ふったら.']]},{t:'N3: ようになる',x:'<p>Verbo de diccionario + ようになる = «llegar a…» (cambio gradual). Para «dejar de…» se usa ～なくなる.</p><p class=f>はなせるようになる / いけなくなる</p>',ex:[['にほんごがはなせるようになりました。','Llegué a poder hablar japonés.'],['さかながたべられなくなりました。','Dejé de poder comer pescado.']],q:[['«Llegué a poder leer»: よめる＿なりました。',['ように','ために','ので','から'],'ように','Verbo + ようになる.'],['«Dejé de poder ir»: いけ＿なりました。',['なく','ない','ません','ず'],'なく','Negativo: ～なくなる.'],['Pasado de ようになる',['ようになった','ようになる','ようにならない'],'ようになった','Pasado informal: なった.']]},{t:'N3: ために',x:'<p>Verbo de diccionario + ために = «para (lograr algo)». Sustantivo + の + ために = «por / para».</p><p class=f>にほんにいくために、べんきょうします</p>',ex:[['にほんにいくために、おかねをためます。','Ahorro dinero para ir a Japón.'],['かぞくのためにはたらきます。','Trabajo por mi familia.']],q:[['«Estudio para aprobar»: ごうかくする＿べんきょうします。',['ために','ながら','たら','から'],'ために','Verbo + ために = para…'],['«Por mi familia»: かぞく＿ために',['の','を','は','に'],'の','Sustantivo + の + ために.'],['«Ahorro para viajar»',['りょこうするためにためます','りょこうしたためにためます','りょこうするとためます'],'りょこうするためにためます','Se usa la forma de diccionario.']]}];
+const KJ=[['一','uno','いち','ひと(つ)','一人','ひとり','una persona'],['二','dos','に','ふた(つ)','二月','にがつ','febrero'],['三','tres','さん','み(つ)','三月','さんがつ','marzo'],['四','cuatro','し','よん','四月','しがつ','abril'],['五','cinco','ご','いつ(つ)','五月','ごがつ','mayo'],['六','seis','ろく','む(つ)','六月','ろくがつ','junio'],['七','siete','しち','なな','七月','しちがつ','julio'],['八','ocho','はち','や(つ)','八月','はちがつ','agosto'],['九','nueve','きゅう','ここの(つ)','九月','くがつ','septiembre'],['十','diez','じゅう','とお','十月','じゅうがつ','octubre'],['日','día, sol','にち','ひ','日本','にほん','Japón'],['月','luna, mes','げつ','つき','月曜日','げつようび','lunes'],['火','fuego','か','ひ','火曜日','かようび','martes'],['水','agua','すい','みず','水曜日','すいようび','miércoles'],['木','árbol','もく','き','木曜日','もくようび','jueves'],['人','persona','じん','ひと','日本人','にほんじん','japonés (persona)'],['山','montaña','さん','やま','富士山','ふじさん','monte Fuji'],['川','río','せん','かわ','川','かわ','río'],['口','boca','こう','くち','出口','でぐち','salida'],['目','ojo','もく','め','目','め','ojo'],['大','grande','だい','おお(きい)','大学','だいがく','universidad'],['小','pequeño','しょう','ちい(さい)','小学生','しょうがくせい','alumno de primaria'],['中','centro, dentro','ちゅう','なか','中国','ちゅうごく','China'],['上','arriba','じょう','うえ','上手','じょうず','hábil'],['下','abajo','か','した','下手','へた','torpe'],['学','estudiar','がく','まな(ぶ)','学生','がくせい','estudiante'],['校','escuela','こう','-','学校','がっこう','escuela'],['先','antes, anterior','せん','さき','先生','せんせい','profesor'],['生','vida, nacer','せい','う(まれる)','生活','せいかつ','vida diaria'],['本','libro, origen','ほん','もと','本','ほん','libro'],['年','año','ねん','とし','今年','ことし','este año'],['今','ahora','こん','いま','今日','きょう','hoy'],['時','hora, tiempo','じ','とき','時間','じかん','tiempo'],['分','minuto, entender','ふん','わ(かる)','分かる','わかる','entender'],['半','mitad','はん','なか(ば)','半分','はんぶん','la mitad'],['車','coche','しゃ','くるま','電車','でんしゃ','tren'],['国','país','こく','くに','国','くに','país'],['食','comer','しょく','た(べる)','食べる','たべる','comer'],['飲','beber','いん','の(む)','飲む','のむ','beber'],['見','ver','けん','み(る)','見る','みる','ver']];
+const KX=`百|cien|ひゃく|-|三百|さんびゃく|trescientos
+千|mil|せん|ち|千円|せんえん|mil yenes
+万|diez mil|まん|-|一万|いちまん|diez mil
+円|yen, círculo|えん|まる(い)|百円|ひゃくえん|cien yenes
+金|oro, dinero|きん|かね|お金|おかね|dinero
+土|tierra|ど|つち|土曜日|どようび|sábado
+曜|día de la semana|よう|-|日曜日|にちようび|domingo
+午|mediodía|ご|-|午前|ごぜん|mañana (a. m.)
+前|delante, antes|ぜん|まえ|名前|なまえ|nombre
+後|detrás, después|ご|あと|午後|ごご|tarde (p. m.)
+毎|cada|まい|-|毎日|まいにち|todos los días
+何|qué|か|なに|何時|なんじ|¿qué hora?
+男|hombre|だん|おとこ|男の人|おとこのひと|hombre
+女|mujer|じょ|おんな|女の人|おんなのひと|mujer
+子|niño|し|こ|子ども|こども|niño
+父|padre|ふ|ちち|お父さん|おとうさん|padre (de otro)
+母|madre|ぼ|はは|お母さん|おかあさん|madre (de otro)
+友|amigo|ゆう|とも|友達|ともだち|amigo
+左|izquierda|さ|ひだり|左手|ひだりて|mano izquierda
+右|derecha|う|みぎ|右手|みぎて|mano derecha
+田|arrozal|でん|た|田中|たなか|Tanaka (apellido)
+耳|oreja|じ|みみ|耳|みみ|oreja
+手|mano|しゅ|て|手紙|てがみ|carta
+足|pie, suficiente|そく|あし|足|あし|pie
+力|fuerza|りょく|ちから|力|ちから|fuerza
+名|nombre|めい|な|有名|ゆうめい|famoso
+白|blanco|はく|しろ(い)|白い|しろい|blanco
+赤|rojo|せき|あか(い)|赤い|あかい|rojo
+青|azul|せい|あお(い)|青い|あおい|azul
+高|alto, caro|こう|たか(い)|高い|たかい|alto, caro
+安|barato, seguro|あん|やす(い)|安い|やすい|barato
+長|largo|ちょう|なが(い)|長い|ながい|largo
+多|mucho|た|おお(い)|多い|おおい|mucho
+少|poco|しょう|すく(ない)|少ない|すくない|poco
+新|nuevo|しん|あたら(しい)|新聞|しんぶん|periódico
+古|viejo|こ|ふる(い)|古い|ふるい|viejo
+出|salir|しゅつ|で(る)|出る|でる|salir
+入|entrar|にゅう|い(る)|入口|いりぐち|entrada
+行|ir|こう|い(く)|行く|いく|ir
+来|venir|らい|く(る)|来る|くる|venir
+聞|oír, preguntar|ぶん|き(く)|聞く|きく|escuchar
+読|leer|どく|よ(む)|読む|よむ|leer
+書|escribir|しょ|か(く)|書く|かく|escribir
+話|hablar|わ|はな(す)|話す|はなす|hablar
+買|comprar|ばい|か(う)|買う|かう|comprar
+会|encontrar|かい|あ(う)|会う|あう|encontrarse
+天|cielo|てん|あま|天気|てんき|clima
+気|ánimo, energía|き|-|元気|げんき|con energía
+雨|lluvia|う|あめ|雨|あめ|lluvia
+電|electricidad|でん|-|電話|でんわ|teléfono
+語|idioma|ご|かた(る)|日本語|にほんご|idioma japonés
+外|afuera|がい|そと|外国|がいこく|extranjero
+間|intervalo|かん|あいだ|人間|にんげん|ser humano
+休|descansar|きゅう|やす(む)|休み|やすみ|descanso
+花|flor|か|はな|花|はな|flor
+思|pensar|し|おも(う)|思う|おもう|pensar
+考|reflexionar|こう|かんが(える)|考える|かんがえる|reflexionar
+知|saber, conocer|ち|し(る)|知る|しる|saber
+言|decir|げん|い(う)|言う|いう|decir
+使|usar|し|つか(う)|使う|つかう|usar
+作|hacer, crear|さく|つく(る)|作る|つくる|crear
+待|esperar|たい|ま(つ)|待つ|まつ|esperar
+持|sostener, tener|じ|も(つ)|持つ|もつ|llevar, tener
+立|ponerse de pie|りつ|た(つ)|立つ|たつ|ponerse de pie
+歩|caminar|ほ|ある(く)|歩く|あるく|caminar
+走|correr|そう|はし(る)|走る|はしる|correr
+帰|regresar|き|かえ(る)|帰る|かえる|volver
+起|levantarse|き|お(きる)|起きる|おきる|levantarse
+寝|dormir|しん|ね(る)|寝る|ねる|dormir
+教|enseñar|きょう|おし(える)|教える|おしえる|enseñar
+習|practicar, aprender|しゅう|なら(う)|習う|ならう|aprender
+勉|esfuerzo|べん|-|勉強|べんきょう|estudio
+強|fuerte|きょう|つよ(い)|強い|つよい|fuerte
+弱|débil|じゃく|よわ(い)|弱い|よわい|débil
+重|pesado|じゅう|おも(い)|重い|おもい|pesado
+軽|ligero|けい|かる(い)|軽い|かるい|ligero
+早|temprano|そう|はや(い)|早い|はやい|temprano
+遅|lento, tarde|ち|おそ(い)|遅い|おそい|lento
+近|cerca|きん|ちか(い)|近い|ちかい|cerca
+遠|lejos|えん|とお(い)|遠い|とおい|lejos
+広|amplio|こう|ひろ(い)|広い|ひろい|amplio
+暗|oscuro|あん|くら(い)|暗い|くらい|oscuro
+明|claro, brillante|めい|あか(るい)|明るい|あかるい|luminoso
+暑|calor (clima)|しょ|あつ(い)|暑い|あつい|caluroso
+寒|frío (clima)|かん|さむ(い)|寒い|さむい|frío
+冷|enfriar, frío al tacto|れい|つめ(たい)|冷たい|つめたい|frío al tacto
+熱|fiebre, calor|ねつ|あつ(い)|熱|ねつ|fiebre
+悪|malo|あく|わる(い)|悪い|わるい|malo
+良|bueno|りょう|よ(い)|良い|よい|bueno
+同|igual|どう|おな(じ)|同じ|おなじ|igual
+色|color|しょく|いろ|色|いろ|color
+音|sonido|おん|おと|音楽|おんがく|música
+楽|diversión|らく|たの(しい)|楽しい|たのしい|divertido
+歌|canción|か|うた|歌|うた|canción
+店|tienda|てん|みせ|店|みせ|tienda
+屋|local, techo|おく|や|部屋|へや|habitación
+駅|estación|えき|-|駅|えき|estación
+道|camino|どう|みち|道|みち|camino
+町|pueblo|ちょう|まち|町|まち|pueblo
+市|ciudad, mercado|し|いち|市民|しみん|ciudadano
+森|bosque|しん|もり|森|もり|bosque
+林|arboleda|りん|はやし|林|はやし|arboleda
+海|mar|かい|うみ|海|うみ|mar
+空|vacío, aire|くう|そら|空|そら|cielo
+夜|noche|や|よる|夜|よる|noche
+朝|amanecer, mañana|ちょう|あさ|朝|あさ|mañana
+昼|luz del día|ちゅう|ひる|昼|ひる|mediodía
+晩|tarde-noche|ばん|-|今晩|こんばん|esta noche
+週|semana|しゅう|-|毎週|まいしゅう|cada semana
+春|primavera|しゅん|はる|春|はる|primavera
+夏|verano|か|なつ|夏|なつ|verano
+秋|otoño|しゅう|あき|秋|あき|otoño
+冬|invierno|とう|ふゆ|冬|ふゆ|invierno
+北|norte|ほく|きた|北|きた|norte
+南|sur|なん|みなみ|南|みなみ|sur
+東|este|とう|ひがし|東京|とうきょう|Tokio
+西|oeste|せい|にし|西|にし|oeste
+犬|perro|けん|いぬ|犬|いぬ|perro
+猫|gato|びょう|ねこ|猫|ねこ|gato
+鳥|pájaro|ちょう|とり|鳥|とり|pájaro
+魚|pescado|ぎょ|さかな|魚|さかな|pescado
+肉|carne|にく|-|肉|にく|carne
+米|arroz crudo|べい|こめ|米|こめ|arroz
+茶|té|ちゃ|-|お茶|おちゃ|té
+薬|medicina|やく|くすり|薬|くすり|medicina
+病|enfermedad|びょう|や(む)|病気|びょうき|enfermedad
+院|institución|いん|-|病院|びょういん|hospital
+医|médico|い|-|医者|いしゃ|médico
+者|persona (agente)|しゃ|もの|学者|がくしゃ|erudito
+家|casa, familia|か|いえ|家族|かぞく|familia
+族|clan, tribu|ぞく|-|民族|みんぞく|etnia
+室|sala|しつ|-|教室|きょうしつ|aula
+紙|papel|し|かみ|紙|かみ|papel
+字|carácter escrito|じ|-|漢字|かんじ|kanji
+文|texto, frase|ぶん|ふみ|文|ぶん|oración
+英|inglés, excelente|えい|-|英語|えいご|idioma inglés
+仕|servir|し|-|仕事|しごと|trabajo
+事|asunto, hecho|じ|こと|食事|しょくじ|comida (acto)
+社|empresa, santuario|しゃ|やしろ|会社|かいしゃ|empresa
+売|vender|ばい|う(る)|売る|うる|vender
+開|abrir|かい|あ(ける)|開ける|あける|abrir
+閉|cerrar|へい|し(める)|閉める|しめる|cerrar
+始|comenzar|し|はじ(める)|始める|はじめる|comenzar
+終|terminar|しゅう|お(わる)|終わる|おわる|terminar
+送|enviar|そう|おく(る)|送る|おくる|enviar
+運|transportar|うん|はこ(ぶ)|運動|うんどう|deporte
+動|moverse|どう|うご(く)|動く|うごく|moverse
+働|trabajar|どう|はたら(く)|働く|はたらく|trabajar
+住|vivir, residir|じゅう|す(む)|住む|すむ|vivir
+方|dirección, persona|ほう|かた|方|かた|persona (cortés)
+世|mundo, era|せ|よ|世界|せかい|mundo
+理|razón, lógica|り|-|無理|むり|imposible
+料|material, tarifa|りょう|-|料金|りょうきん|tarifa
+洋|occidental|よう|-|洋服|ようふく|ropa occidental
+服|ropa|ふく|-|服|ふく|ropa
+着|llegar, vestir|ちゃく|つ(く)|着く|つく|llegar
+代|generación, reemplazo|だい|か(わる)|時代|じだい|época
+彼|él|ひ|かれ|彼|かれ|él
+他|otro|た|ほか|他|ほか|otro
+正|correcto|せい|ただ(しい)|正しい|ただしい|correcto
+意|intención|い|-|意味|いみ|significado
+味|sabor|み|あじ|味|あじ|sabor
+感|sentimiento|かん|-|感じる|かんじる|sentir
+心|corazón|しん|こころ|心|こころ|corazón
+体|cuerpo|たい|からだ|体|からだ|cuerpo
+頭|cabeza|とう|あたま|頭|あたま|cabeza
+顔|rostro|がん|かお|顔|かお|rostro
+声|voz|せい|こえ|声|こえ|voz
+鼻|nariz|び|はな|鼻水|はなみず|moco
+歯|diente|し|は|歯|は|diente
+地|suelo, tierra firme|ち|-|地図|ちず|mapa
+図|plano, dibujo|ず|-|図書館|としょかん|biblioteca
+館|edificio público|かん|-|映画館|えいがかん|cine
+場|lugar|じょう|ば|場所|ばしょ|lugar
+所|sitio|しょ|ところ|所|ところ|sitio
+区|distrito|く|-|区|く|distrito
+県|prefectura|けん|-|県|けん|prefectura
+都|capital|と|みやこ|東京都|とうきょうと|provincia de Tokio
+台|plataforma, contador|だい|-|台所|だいどころ|cocina (lugar)
+題|tema|だい|-|宿題|しゅくだい|tarea
+問|pregunta|もん|と(う)|質問|しつもん|pregunta
+答|respuesta|とう|こた(える)|答える|こたえる|responder
+試|probar|し|ため(す)|試験|しけん|examen
+宿|alojamiento|しゅく|やど|宿|やど|posada
+旅|viaje|りょ|たび|旅行|りょこう|viaje
+切|cortar|せつ|き(る)|切る|きる|cortar
+計|medir|けい|はか(る)|時計|とけい|reloj
+洗|lavar|せん|あら(う)|洗う|あらう|lavar
+払|pagar|ふつ|はら(う)|払う|はらう|pagar
+借|pedir prestado|しゃく|か(りる)|借りる|かりる|pedir prestado
+貸|prestar|たい|か(す)|貸す|かす|prestar
+返|devolver|へん|かえ(す)|返す|かえす|devolver
+死|morir|し|し(ぬ)|死ぬ|しぬ|morir
+集|reunir|しゅう|あつ(める)|集める|あつめる|reunir
+引|tirar|いん|ひ(く)|引く|ひく|tirar
+押|empujar|おう|お(す)|押す|おす|empujar
+取|tomar, coger|しゅ|と(る)|取る|とる|tomar
+乗|subir a un vehículo|じょう|の(る)|乗る|のる|subir
+降|bajar, caer|こう|お(りる)|降りる|おりる|bajar
+止|detener|し|と(まる)|止まる|とまる|detenerse
+太|grueso|たい|ふと(い)|太い|ふとい|grueso
+細|delgado, fino|さい|ほそ(い)|細い|ほそい|delgado
+丸|redondo|がん|まる(い)|丸い|まるい|redondo
+特|especial|とく|-|特別|とくべつ|especial
+別|distinto, separar|べつ|わか(れる)|別れる|わかれる|separarse
+全|todo, entero|ぜん|まった(く)|全部|ぜんぶ|todo
+部|parte, sección|ぶ|-|部分|ぶぶん|parte
+用|uso, asunto|よう|もち(いる)|用事|ようじ|asunto
+親|padres|しん|おや|親|おや|padres
+兄|hermano mayor|けい|あに|兄|あに|hermano mayor
+姉|hermana mayor|し|あね|姉|あね|hermana mayor
+弟|hermano menor|だい|おとうと|弟|おとうと|hermano menor
+妹|hermana menor|まい|いもうと|妹|いもうと|hermana menor
+私|yo (formal)|し|わたし|私|わたし|yo
+勝|ganar|しょう|か(つ)|勝つ|かつ|ganar
+負|perder|ふ|ま(ける)|負ける|まける|perder
+泳|nadar|えい|およ(ぐ)|泳ぐ|およぐ|nadar
+遊|jugar, divertirse|ゆう|あそ(ぶ)|遊ぶ|あそぶ|jugar
+泣|llorar|きゅう|な(く)|泣く|なく|llorar
+笑|reír|しょう|わら(う)|笑う|わらう|reír
+怒|enojarse|ど|おこ(る)|怒る|おこる|enojarse
+忘|olvidar|ぼう|わす(れる)|忘れる|わすれる|olvidar
+覚|memorizar|かく|おぼ(える)|覚える|おぼえる|memorizar
+光|luz|こう|ひかり|光|ひかり|luz
+風|viento|ふう|かぜ|風|かぜ|viento
+~FIN~`;
+KJ.push(...KX.split('\n').filter(l=>l.includes('|')).map(l=>l.split('|')));
+const RD=[{id:'r0',unit:'Lecturas',title:'Presentación',sub:'Texto de 4 líneas',type:'read',req:'h9',L:[[[['わたし','わたし','yo'],'は ',['マリア','マリア','María'],'です。'],'Yo soy María.'],[[['がくせい','がくせい','estudiante'],'です。'],'Soy estudiante.'],[[['ねこ','ねこ','gato'],'が ',['すき','すき','que gusta'],'です。'],'Me gustan los gatos.'],[[['ともだち','ともだち','amigo'],'も ',['ねこ','ねこ','gato'],'が ',['すき','すき','que gusta'],'です。'],'A mi amigo también le gustan.']],Q:[['¿Cómo se llama la protagonista?',['María','Tanaka','Ana'],'María'],['¿Qué le gusta?',['Los gatos','Los perros','El té'],'Los gatos']]},{id:'r1',unit:'Lecturas',title:'En el café',sub:'Diálogo corto',type:'read',req:'v0',L:[[[['すみません','すみません','disculpe'],'。',['みず','みず','agua'],'を ',['ください','ください','por favor'],'。'],'Disculpe, agua por favor.'],[[['はい','はい','sí'],'、',['どうぞ','どうぞ','aquí tiene'],'。'],'Sí, aquí tiene.'],[[['ありがとう','ありがとう','gracias'],'ございます。'],'Muchas gracias.']],Q:[['¿Qué pide la persona?',['Agua','Té','Pan'],'Agua'],['¿Qué significa どうぞ?',['Aquí tiene','Perdón','Adiós'],'Aquí tiene']]},{id:'r2',unit:'Lecturas',title:'Mi día',sub:'Rutina diaria',type:'read',req:'g1',L:[[[['わたし','わたし','yo'],'は ',['しちじ','しちじ','las siete'],'に ',['おきます','おきます','levantarse'],'。'],'Me levanto a las siete.'],[[['がっこう','がっこう','escuela'],'に ',['いきます','いきます','ir'],'。'],'Voy a la escuela.'],[[['ひるごはん','ひるごはん','almuerzo'],'を ',['たべます','たべます','comer'],'。'],'Almuerzo.'],[[['ともだち','ともだち','amigo'],'と ',['はなします','はなします','conversar'],'。'],'Converso con amigos.']],Q:[['¿A qué hora se levanta?',['A las 7','A las 8','A las 6'],'A las 7'],['¿Adónde va?',['A la escuela','Al parque','A casa'],'A la escuela'],['¿Con quién conversa?',['Con amigos','Con su madre','Con nadie'],'Con amigos']]},{id:'r3',unit:'Lecturas',title:'Un día de escuela',sub:'Con kanji básicos',type:'read',req:'j1',L:[[[['今日','きょう','hoy'],'は ',['学校','がっこう','escuela'],'に ',['行きます','いきます','ir'],'。'],'Hoy voy a la escuela.'],[[['先生','せんせい','profesor'],'は ',['日本人','にほんじん','japonés'],'です。'],'El profesor es japonés.'],[[['九時','くじ','las nueve'],'から ',['学校','がっこう','escuela'],'です。'],'Desde las nueve estoy en la escuela.'],[[['友達','ともだち','amigo'],'と ',['昼ご飯','ひるごはん','almuerzo'],'を ',['食べます','たべます','comer'],'。'],'Almuerzo con un amigo.']],Q:[['¿Quién es japonés?',['El profesor','El amigo','El estudiante'],'El profesor'],['¿A qué hora empieza?',['A las 9','A las 7','A las 10'],'A las 9'],['¿Con quién almuerza?',['Con un amigo','Con el profesor','Solo'],'Con un amigo']]},{id:'r4',unit:'Lecturas',title:'En la estación',sub:'Pedir indicaciones',type:'read',req:'g2',L:[[[['すみません','すみません','disculpe'],'、',['駅','えき','estación'],'は ',['どこ','どこ','dónde'],'ですか。'],'Disculpe, ¿dónde está la estación?'],[[['あそこ','あそこ','allá'],'です。'],'Está allá.'],[[['電車','でんしゃ','tren'],'で ',['行きます','いきます','ir'],'か。'],'¿Va en tren?'],[[['はい','はい','sí'],'、',['ありがとう','ありがとう','gracias'],'ございます。'],'Sí, muchas gracias.']],Q:[['¿Qué busca?',['La estación','El baño','La escuela'],'La estación'],['¿Cómo va a ir?',['En tren','A pie','En coche'],'En tren']]}];
+const LS=[];
+const mk=a=>a.split(' ').map(s=>{const m=s.match(/^([ぁ-ん]+)([a-z]+)$/);return{h:m[1],r:m[2]}});
+const KD=mk('がga ぎgi ぐgu げge ごgo ざza じji ずzu ぜze ぞzo だda ぢdji づdzu でde どdo ばba びbi ぶbu べbe ぼbo ぱpa ぴpi ぷpu ぺpe ぽpo'),KY=mk('きゃkya きゅkyu きょkyo しゃsha しゅshu しょsho ちゃcha ちゅchu ちょcho にゃnya にゅnyu にょnyo ひゃhya ひゅhyu ひょhyo みゃmya みゅmyu みょmyo りゃrya りゅryu りょryo ぎゃgya ぎゅgyu ぎょgyo じゃja じゅju じょjo びゃbya びゅbyu びょbyo ぴゃpya ぴゅpyu ぴょpyo'),ALLK=[...KANA,...KD,...KY];
+[['h','Hiragana'],['k','Katakana']].forEach(([sc,un])=>[['',un,KANA,RS,RN,null],['d',un+' con marcas',KD,[5,5,5,5,5],['Fila G','Fila Z','Fila D','Fila B','Fila P'],sc+'9'],['y',un+' combinados',KY,[6,6,6,6,6,3],['Grupo 1','Grupo 2','Grupo 3','Grupo 4','Grupo 5','Grupo 6'],sc+'d4']].forEach(([g,u,A,Z,N,rq])=>{let o=0;Z.forEach((n,i)=>{LS.push({id:sc+g+i,unit:u,title:N[i],type:'kana',sc,chars:A.slice(o,o+n),req:i?sc+g+(i-1):rq});o+=n})}));
+VOC.forEach((v,i)=>LS.push({id:"v"+i,unit:"Vocabulario",title:v.t,type:"vocab",words:v.w,req:i?"v"+(i-1):"h9"}));
+GR.forEach((g,i)=>LS.push({id:"g"+i,unit:"Gramática",title:g.t,type:"gram",g,req:i?"g"+(i-1):"v0"}));
+[['Números 1 a 5',0],['Números 6 a 10',5],['Días y naturaleza',10],['Personas y cuerpo',15],['Tamaño y posición',20],['La escuela',25],['El tiempo',30],['Vida diaria',35]].forEach(([t,o],i)=>LS.push({id:'j'+i,unit:'Kanji básicos',title:t,type:'kanji',ks:KJ.slice(o,o+5),req:i?'j'+(i-1):'v0'}));for(let o=40,i=8;o<KJ.length;o+=5,i++)LS.push({id:'j'+i,unit:'Kanji '+(o<95?'N5':o<270?'N4':o<640?'N3':o<1000?'N2':'N1'),title:'Grupo '+(i-7),type:'kanji',ks:KJ.slice(o,o+5),req:'j'+(i-1)});
+const ALL=[...LS,...RD];
+const def=()=>({xp:0,days:{},done:{},cards:{},lerr:{},secs:0,theme:"auto",rev:0,ach:{},best:0,sv:{}});
+function load(){try{const r=localStorage.getItem(KEY);if(r)return{...def(),...JSON.parse(r)}}catch(e){}return def()}
+let S=load(),V="home",R=null,RV=null,last=Date.now();
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const fmt=d=>d.toLocaleDateString("sv"),today=()=>fmt(new Date());
+const day=()=>S.days[today()]||(S.days[today()]={xp:0,s:0,l:0,r:0});
+const shuf=a=>a.map(x=>[Math.random(),x]).sort((a,b)=>a[0]-b[0]).map(x=>x[1]);
+const opts=(a,p)=>shuf([a,...shuf(p.filter(x=>x!==a)).slice(0,3)]);
+const lvl=x=>Math.floor(Math.sqrt(x/40))+1,xpFor=l=>40*(l-1)**2;
+const dc=p=>Object.keys(S.done).filter(k=>k[0]==p).length;
+function tick(){const n=Date.now(),d=Math.min(30,(n-last)/1000);last=n;S.secs+=d;day().s+=d}
+function toast(t){const e=$("#t");e.textContent=t;e.classList.add("s");clearTimeout(toast.i);toast.i=setTimeout(()=>e.classList.remove("s"),2600)}
+function gain(n){const l=lvl(S.xp);S.xp+=n;day().xp+=n;if(lvl(S.xp)>l)toast("¡Nivel "+lvl(S.xp)+"!")}
+function streak(){let c=0,d=new Date();if(!(S.days[fmt(d)]||{}).xp)d.setDate(d.getDate()-1);while((S.days[fmt(d)]||{}).xp>0){c++;d.setDate(d.getDate()-1)}return c}
+const weekL=()=>{let n=0,d=new Date();for(let i=0;i<7;i++){n+=(S.days[fmt(d)]||{}).l||0;d.setDate(d.getDate()-1)}return n};
+const dueList=()=>Object.entries(S.cards).filter(([k,c])=>c.d<=Date.now()).sort((a,b)=>a[1].e-b[1].e).map(x=>x[0]);
+const rv=()=>{const d=day();return d.r>=10||(d.r>0&&dueList().length==0)};
+const ACH=[["Primer paso","Completa tu primera lección",()=>Object.keys(S.done).length>=1],["Maestro del hiragana",'Completa las 21 lecciones de hiragana',()=>dc('h')>=21],["Maestro del katakana",'Completa las 21 lecciones de katakana',()=>dc('k')>=21],["Lector de palabras",'Aprende 40 palabras',()=>dc('v')>=5],["Gramática base",'Completa las 13 lecciones de gramática',()=>dc('g')>=13],["Constancia","Estudia 3 días seguidos",()=>streak()>=3],["Memoria activa","Repasa 50 tarjetas",()=>S.rev>=50],["Nivel 5","Llega al nivel 5",()=>lvl(S.xp)>=5],['Primeros kanji','Completa los 8 grupos de kanji',()=>dc('j')>=8],['Lector','Completa las 5 lecturas',()=>dc('r')>=5],['Cien kanji','Completa 20 grupos de kanji',()=>dc('j')>=20],["Dominio","Saca 100% en una lección",()=>Object.values(S.done).some(x=>x==100)]];
+function after(){const d=day();[d.l>=1,rv(),d.s>=600].forEach((ok,i)=>{if(ok&&!d["b"+i]){d["b"+i]=1;gain(10);toast("Misión cumplida: +10 XP")}});
+ACH.forEach(a=>{if(!S.ach[a[0]]&&a[2]()){S.ach[a[0]]=today();toast("Logro: "+a[0])}});S.best=Math.max(S.best,streak());save()}
+const speak=t=>{if(window.speechSynthesis){const u=new SpeechSynthesisUtterance(t);u.lang="ja-JP";speechSynthesis.cancel();speechSynthesis.speak(u)}else toast("Tu dispositivo no tiene voz japonesa")};
+const unlocked=l=>!l.req||l.req in S.done;
+const kf=(l,c)=>l.sc=="k"?kat(c.h):c.h;
+function build(l){
+if(l.type=='kanji'){const M=KJ.map(x=>x[1]),K=KJ.map(x=>x[0]),W=KJ.map(x=>x[5]);let q=[];l.ks.forEach(x=>{q.push({big:x[0],p:'¿Qué significa?',o:opts(x[1],M),a:x[1]});q.push({big:x[1],p:'Elige el kanji',o:opts(x[0],K),a:x[0]});q.push({big:x[4],p:'¿Cómo se lee?',o:opts(x[5],W),a:x[5]})});return shuf(q).slice(0,12)}
+if(l.type=='read')return l.Q.map(x=>({p:x[0],o:shuf(x[1]),a:x[2]}));
+if(l.type=="kana"){const P=ALLK.map(c=>c.r),Q=ALLK.map(c=>kf(l,c));let q=[];l.chars.forEach(c=>{q.push({big:kf(l,c),p:"¿Cómo se lee?",o:opts(c.r,P),a:c.r});q.push({big:c.r,p:"Elige el carácter",o:opts(kf(l,c),Q),a:kf(l,c)})});return shuf(q).slice(0,10)}
+if(l.type=="vocab"){const E=VOC.flatMap(v=>v.w.map(w=>w[2])),J=VOC.flatMap(v=>v.w.map(w=>w[0]));let q=[];l.words.forEach(w=>{q.push({big:w[0],sub:w[1],p:"¿Qué significa?",o:opts(w[2],E),a:w[2]});q.push({big:w[2],p:"¿Cómo se dice en japonés?",o:opts(w[0],J),a:w[0]})});return shuf(q).slice(0,12)}
+return l.g.q.map(x=>({p:x[0],o:shuf(x[1]),a:x[2],w:x[3]}))}
+function addCards(l){const t=Date.now();if(l.type=='kanji')l.ks.forEach(x=>{const k='j:'+x[0];S.cards[k]=S.cards[k]||{d:t,i:0,e:2.5,n:0}});if(l.type=="kana")l.chars.forEach(c=>{const k="k:"+l.sc+":"+c.h;S.cards[k]=S.cards[k]||{d:t,i:0,e:2.5,n:0}});if(l.type=="vocab")l.words.forEach(w=>{const k="v:"+w[0];S.cards[k]=S.cards[k]||{d:t,i:0,e:2.5,n:0}})}
+function finish(){const l=R.l,sc=R.ok/R.n,pass=sc>=.7;let xp=0;if(pass){xp=l.id in S.done?6:20+Math.round(sc*20);S.done[l.id]=Math.max(S.done[l.id]||0,Math.round(sc*100));day().l++;addCards(l);if(sc==1)S.lerr[l.id]=0;gain(xp)}
+R.res={sc,pass,xp};R.step="end";after();render()}
+function pick(i){if(R.ans!=null)return;const q=R.qs[R.qi];R.ans=i;if(q.o[i]===q.a){if(!q.r)R.ok++}else{S.lerr[R.l.id]=(S.lerr[R.l.id]||0)+1;if(!q.r)R.qs.push({...q,r:1})}save();render()}
+function nextQ(){R.ans=null;R.qi++;R.qi>=R.qs.length?finish():render()}
+function face(id){const p=id.split(':');if(p[0]=='j'){const x=KJ.find(z=>z[0]==p[1]);return{f:x[0],b:x[1]+'. On: '+x[2]+'. Kun: '+x[3],q:'¿Qué significa?'}}if(p[0]=='s'){const x=S.sv[p[1]];return{f:p[1],b:x[0]+': '+x[1],q:'¿Qué significa?',s:p[1]}}if(p[0]=="k"){const c=ALLK.find(x=>x.h==p[2]);return{f:p[1]=="k"?kat(c.h):c.h,b:c.r,q:"¿Cómo se lee?",s:p[1]=="k"?kat(c.h):c.h}}
+const w=VOC.flatMap(v=>v.w).find(x=>x[0]==p[1]),dir=S.cards[id].n%2;return dir?{f:w[2],b:w[0]+" ("+w[1]+")",q:"¿Cómo se dice en japonés?",x:w}:{f:w[0],b:w[1]+": "+w[2],q:"¿Qué significa?",s:w[0],x:w}}
+function grade(g){const id=RV.q[RV.i],c=S.cards[id];if(g==0){c.i=0;c.d=Date.now()+6e5;c.e=Math.max(1.3,c.e-.2);c.n=0;RV.q.push(id)}else{c.i=c.n==0?1:c.n==1?3:Math.round(c.i*c.e*(g==2?1.4:1));c.e+=g==2?.1:0;c.n++;c.d=Date.now()+c.i*864e5;gain(g)}
+day().r++;S.rev++;RV.i++;RV.show=false;after();render()}
+function recommend(){const due=dueList().length;if(due>=5)return{t:due+" tarjetas esperan su repaso",s:"Repasar ahora fija lo aprendido antes de añadir algo nuevo.",a:"go",v:"rev",b:"Repasar"};
+const w=LS.filter(l=>l.id in S.done&&(S.lerr[l.id]||0)>=3&&S.done[l.id]<90).sort((a,b)=>S.lerr[b.id]-S.lerr[a.id])[0];if(w)return{t:"Refuerza: "+w.title,s:"Fallaste varias veces aquí. Repítela para dominarla.",a:"open",v:w.id,b:"Practicar"};
+const n=LS.find(l=>!(l.id in S.done)&&unlocked(l));if(n)return{t:(Object.keys(S.done).length?"Continúa: ":"Empieza: ")+n.unit+", "+n.title,s:"Lección nueva de unos 10 minutos.",a:"open",v:n.id,b:"Empezar"};
+return{t:"Has completado toda la ruta",s:"Mantén vivo lo aprendido con el repaso.",a:"go",v:"rev",b:"Repasar"}}
+const bar=p=>`<div class=bar><i style="width:${p}%"></i></div>`;
+function vHome(){const l=lvl(S.xp),a=xpFor(l),b=xpFor(l+1),d=day(),r=recommend(),ms=[["Completa una lección",d.l>=1],["Repasa 10 tarjetas",rv()],["Estudia 10 minutos",d.s>=600]],wk=Math.min(5,weekL());
+return`<h1>日本語</h1><p class=mu>Tu ruta hacia el japonés, a tu ritmo.</p>
+<div class=card><div class=row><h3>Nivel ${l}</h3><span class=mu>${S.xp} XP</span></div>${bar(Math.round((S.xp-a)/(b-a)*100))}<p class=mu style="margin:8px 0 0">Racha: ${streak()} días. Mejor racha: ${S.best}. Si faltas un día, no pierdes nada de lo aprendido.</p></div>
+<div class=card><h3>${r.t}</h3><p class=mu>${r.s}</p><button class=btn data-a="${r.a}" data-v="${r.v}">${r.b}</button></div>
+<h2>Misiones de hoy</h2><div class=card>${ms.map(m=>`<p class="${m[1]?"ck":""}">${m[1]?"✓":"○"} ${m[0]}${m[1]?"":" (+10 XP)"}</p>`).join("")}<p class=mu style="margin:0">Sesión de 20 a 30 minutos: repaso, una lección nueva y práctica.</p></div>
+<div class=card><div class=row><h3>Desafío semanal</h3><span class=mu>${wk} de 5 lecciones</span></div>${bar(wk*20)}</div><button class='btn alt' data-a=go data-v=set>Ajustes</button>`}
+function vPath(){let u="",h="";LS.forEach(l=>{if(l.unit!=u){u=l.unit;const t=LS.filter(x=>x.unit==u),n=t.filter(x=>x.id in S.done).length;h+=`<h2>${u} <span class=mu>${n} de ${t.length}</span></h2>`}
+const ok=unlocked(l),dn=l.id in S.done;h+=`<button class=lsn data-a="open" data-v="${l.id}" ${ok?"":"disabled"}><span class="dot ${dn?"d":""}">${dn?"✓":ok?"→":"–"}</span><span><b>${l.title}</b><br><span class=mu>${l.type=="kana"?l.chars.map(c=>kf(l,c)).join(" "):dn?"Mejor resultado: "+S.done[l.id]+"%":ok?"Disponible":"Completa la lección anterior"}</span></span></button>`});return`<h1>Ruta</h1><p class=mu>Completa cada lección con un 70% o más para avanzar. Puedes repetirlas para dominarlas.</p>`+h}
+function vLesson(){const l=R.l;
+if(R.step=="intro"){let c="";if(l.type=="kana")c=`<p>Toca un carácter para escucharlo y practicar su trazo.</p>${R.wc?`<div class=card><div class=row><b style='font-size:28px'>${R.wc}</b><span><button class='btn alt' style='width:auto;margin:0' data-a=cl>Borrar</button> <button class='btn alt' style='width:auto;margin:0' data-a=rec data-v='${R.wc}'>Grabar y comparar</button></span></div><canvas id=cv width=300 height=300></canvas><p class=mu style='margin:0'>Dibuja encima del modelo con el dedo. La grabación se reproduce en tu dispositivo y no se envía a ningún sitio.</p></div>`:''}<div class=grid>${l.chars.map(x=>`<button class=tile data-a=wc data-v="${kf(l,x)}"><b>${kf(l,x)}</b>${x.r}</button>`).join("")}</div>`;
+else if(l.type=="vocab")c=l.words.map(w=>`<div class=card><div class=row><div><b style="font-size:24px">${w[0]}</b> <span class=mu>${w[1]}</span><br>${w[2]} <span class=mu>${w[3]}</span></div><button class="btn alt" style="width:auto;margin:0" data-a=say data-v="${w[0]=="私"?"わたし":w[1]}">Escuchar</button></div><div class=ex>${w[4]}<span>${w[5]}</span></div></div>`).join("");
+else if(l.type=='kanji')c=l.ks.map(x=>`<div class=card><div class=row><div><b style='font-size:40px'>${x[0]}</b> ${x[1]}<br><span class=mu>On: ${x[2]}. Kun: ${x[3]}.</span><br>${x[4]} (${x[5]}): ${x[6]}</div><button class='btn alt' style='width:auto;margin:0' data-a=say data-v='${x[5]}'>Escuchar</button></div></div>`).join('');
+else if(l.type=='read'){const sp=l.L.map(x=>x[0].map(t=>typeof t=='string'?t:t[1]).join('')).join('。'),s=R.sel&&l.L[R.sel[0]][0][R.sel[1]];c=`<p class=mu>Toca una palabra subrayada para ver su significado.</p><div class=card>${l.L.map((x,i)=>`<p style='font-size:20px;margin:0 0 4px'>${x[0].map((t,j)=>typeof t=='string'?t:`<button class=tk data-a=tk data-v='${i},${j}'>${t[0]}</button>`).join('')}</p>${R.tr?`<p class=mu>${x[1]}</p>`:''}`).join('')}</div>${s?`<div class=card><b style='font-size:22px'>${s[0]}</b> ${s[1]}<br>${s[2]}<button class=btn data-a=sv>${S.sv[s[0]]?'Guardada en el repaso':'Guardar en el repaso'}</button></div>`:''}<button class='btn alt' data-a=say data-v='${sp}'>Escuchar texto</button><button class='btn alt' data-a=tr>${R.tr?'Ocultar':'Mostrar'} traducción</button>`}
+else c=l.g.x+"<h3>Ejemplos</h3>"+l.g.ex.map(e=>`<div class=ex>${e[0]}<span>${e[1]}</span></div>`).join("");
+return`<button class="btn alt" style="width:auto;margin:0 0 10px" data-a=go data-v=path>Volver</button><h1>${l.title}</h1><p class=mu>${l.unit}</p>${c}<button class=btn data-a=start>Empezar práctica</button>`}
+if(R.step=="quiz"){const q=R.qs[R.qi],a=R.ans;return`<div class=row><span class=mu>Pregunta ${R.qi+1} de ${R.qs.length}</span><button class="btn alt" style="width:auto;margin:0;padding:6px 12px" data-a=go data-v=path>Salir</button></div>${bar(Math.round(R.qi/R.qs.length*100))}${q.big?`<div class=big>${q.big}</div>${q.sub?`<p class=mu style="text-align:center">${q.sub}</p>`:""}`:""}<p style="text-align:center;font-size:18px;margin:14px 0">${q.p}</p>
+<div class=opts>${q.o.map((o,i)=>`<button class="opt ${a==null?"":o===q.a?"ok":i==a?"no":""}" data-a=pick data-v=${i} ${a==null?"":"disabled"}>${o}</button>`).join("")}</div>
+${a==null?"":`<div class=card style="margin-top:14px"><p><b>${q.o[a]===q.a?"Correcto":"Respuesta: "+q.a}</b></p>${q.w?`<p class=mu>${q.w}</p>`:""}${q.o[a]!==q.a&&!q.r?`<p class=mu>Volverá a aparecer al final.</p>`:""}<button class=btn data-a=next>Continuar</button></div>`}`}
+const r=R.res,ix=LS.indexOf(l),nx=ix<0?null:LS[ix+1];return`<div class=pop style="text-align:center"><div class=big>${Math.round(r.sc*100)}%</div><h2>${r.pass?"Lección completada":"Casi lo tienes"}</h2><p>${r.pass?"+"+r.xp+" XP"+(r.sc==1?". ¡Dominio perfecto!":""):"Necesitas 70% para avanzar. Repásala y vuelve a intentarlo."}</p></div>${r.pass&&nx&&unlocked(nx)?`<button class=btn data-a=open data-v="${nx.id}">Siguiente: ${nx.title}</button>`:""}<button class="btn alt" data-a=open data-v="${l.id}">Repetir</button><button class="btn alt" data-a=go data-v=path>Volver a la ruta</button>`}
+function vRev(){if(!RV)RV={q:dueList().slice(0,15),i:0,show:false};
+if(RV.i>=RV.q.length)return`<h1>Repaso</h1><div class=card><h3>${RV.q.length?"Sesión terminada":"Nada pendiente"}</h3><p class=mu>${RV.q.length?"Las tarjetas difíciles volverán pronto y las dominadas se espaciarán más.":"Las palabras y kana de cada lección completada se añaden aquí automáticamente."}</p><button class=btn data-a=go data-v=path>Ir a la ruta</button></div>`;
+const id=RV.q[RV.i],f=face(id);return`<h1>Repaso</h1><p class=mu>Tarjeta ${RV.i+1} de ${RV.q.length}. Intenta recordar antes de mirar.</p><div class=card><p class=mu style="text-align:center">${f.q}</p><div class=big>${f.f}</div>${RV.show?`<h2 style="text-align:center">${f.b}</h2>${f.x?`<div class=ex>${f.x[4]}<span>${f.x[5]}</span></div>`:""}`:""}${f.s?`<button class="btn alt" data-a=say data-v="${f.s=="私"?"わたし":f.s}">Escuchar</button>`:""}</div>
+${RV.show?`<div class=opts style="grid-template-columns:1fr 1fr 1fr"><button class=opt data-a=grade data-v=0>Otra vez</button><button class=opt data-a=grade data-v=1>Bien</button><button class=opt data-a=grade data-v=2>Fácil</button></div>`:`<button class=btn data-a=show>Mostrar respuesta</button>`}`}
+function vStats(){const t=LS.length,k=Object.entries(S.cards).filter(([i,c])=>i[0]=="k"&&c.n>=2).length,w=Object.entries(S.cards).filter(([i,c])=>i[0]=="v"&&c.n>=1).length;
+const ds=[...Array(14)].map((_,i)=>{const d=new Date();d.setDate(d.getDate()-13+i);return(S.days[fmt(d)]||{}).xp||0}),mx=Math.max(1,...ds);
+const cal=[...Array(28)].map((_,i)=>{const d=new Date();d.setDate(d.getDate()-27+i);return`<i class="${(S.days[fmt(d)]||{}).xp?"a":""}"></i>`}).join("");
+const sk=[['Hiragana','h',21],['Katakana','k',21],['Vocabulario','v',5],['Gramática','g',13],['Kanji','j',Math.ceil(KJ.length/5)],['Lecturas','r',5]].map(s=>`<p class=row style="margin:8px 0 4px"><span>${s[0]}</span><span class=mu>${Math.round(dc(s[1])/s[2]*100)}%</span></p>${bar(dc(s[1])/s[2]*100)}`).join("");
+const wk=LS.filter(l=>S.lerr[l.id]>0).sort((a,b)=>S.lerr[b.id]-S.lerr[a.id]).slice(0,3);
+return`<h1>Progreso</h1><div class=card><p>Lecciones: <b>${Object.keys(S.done).length} de ${t}</b></p><p>Kana reconocidos: <b>${k}</b></p><p>Palabras en repaso: <b>${w}</b></p><p>Kanji en repaso: <b>${Object.keys(S.cards).filter(i=>i[0]=='j').length}</b></p><p>Tarjetas repasadas: <b>${S.rev}</b></p><p style="margin:0">Tiempo de estudio: <b>${Math.round(S.secs/60)} min</b></p></div>
+<h2>Dominio por área</h2><div class=card>${sk}</div>
+<h2>Necesita refuerzo</h2><div class=card>${wk.length?wk.map(l=>`<p class=row style="margin:0 0 6px"><span>${l.title}</span><button class="btn alt" style="width:auto;margin:0;padding:6px 12px" data-a=open data-v="${l.id}">Practicar</button></p>`).join(""):`<p class=mu style="margin:0">Aún no hay errores recurrentes.</p>`}</div>
+<h2>XP de los últimos 14 días</h2><div class=card><div class=bars>${ds.map(x=>`<i style="height:${x/mx*100}%"></i>`).join("")}</div></div>
+<h2>Calendario de actividad</h2><div class=card><div class=cal>${cal}</div></div>
+<h2>Logros</h2><div class=card>${ACH.map(a=>`<p class="${S.ach[a[0]]?"ck":"mu"}" style="margin:0 0 8px">${S.ach[a[0]]?"✓":"○"} <b>${a[0]}</b>: ${a[1]}</p>`).join("")}</div>`}
+function vRead(){return`<h1>Lecturas</h1><p class=mu>Textos cortos para tu nivel. Toca las palabras subrayadas para ver su significado y guardarlas en el repaso.</p>`+RD.map(l=>{const ok=unlocked(l),dn=l.id in S.done;return`<button class=lsn data-a=open data-v='${l.id}' ${ok?'':'disabled'}><span class='dot ${dn?'d':''}'>${dn?'✓':ok?'→':'–'}</span><span><b>${l.title}</b><br><span class=mu>${ok?(dn?'Mejor resultado: '+S.done[l.id]+'%':l.sub):'Completa más lecciones para desbloquearla'}</span></span></button>`}).join('')}
+let TT={m:[],lang:'ja-JP'};
+const esc=s=>s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+function vTutor(){return`<h1>Tutor</h1><p class=mu>Conversa en japonés a tu nivel. Te corrige en español y te deja intentarlo antes de darte la respuesta.</p><div class=opts style='grid-template-columns:1fr 1fr 1fr;margin-bottom:10px'><button class='opt ${TT.voice?'ok':''}' data-a=vm>Modo voz</button><button class='opt ${TT.lang=='es-ES'?'':'ok'}' data-a=lg data-v=ja-JP>Hablo japonés</button><button class='opt ${TT.lang=='es-ES'?'ok':''}' data-a=lg data-v=es-ES>Hablo español</button></div>${TT.m.map(x=>`<div class='msg ${x.role=='user'?'u':'a'}'>${esc(x.content)}</div>`).join('')}${TT.err?`<div class=card><p><b>El tutor aún no está conectado</b></p><p class=mu style='margin:0'>${TT.err}</p></div>`:''}<textarea id=ti rows=2 placeholder='Escribe en japonés o en español' style='width:100%;font:inherit;padding:10px;border-radius:10px;border:1px solid var(--bd);background:var(--sf);color:var(--tx)' oninput='TT.draft=this.value'>${esc(TT.draft||'')}</textarea><button class='btn alt' data-a=mic>${TT.mic?'Escuchando…':'Hablar'}</button><button class=btn data-a=ask>${TT.busy?'Pensando…':TT.m.length?'Enviar':'Empezar conversación'}</button>`}
+async function ask(){if(TT.busy)return;const t=document.getElementById('ti'),v=(t&&t.value.trim())||(TT.m.length?'':'こんにちは');if(!v)return;TT.m.push({role:'user',content:v});TT.draft='';TT.busy=true;TT.err='';render(1);
+try{const r=await fetch('/api/tutor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:TT.m,level:Object.keys(S.done).length})});if(!r.ok)throw new Error(r.status);const d=await r.json();TT.m.push({role:'assistant',content:d.reply});gain(3);if(TT.voice&&jp(d.reply)&&window.speechSynthesis){const u=new SpeechSynthesisUtterance(jp(d.reply));u.lang='ja-JP';u.onend=()=>{if(TT.voice&&V=='tutor')listen()};speechSynthesis.cancel();speechSynthesis.speak(u)}}catch(e){TT.m.pop();TT.err='Para activarlo, despliega la carpeta tutor-api (incluida con la app) en Vercel y define la variable de entorno ANTHROPIC_API_KEY. La clave queda solo en el servidor, nunca en el navegador. Luego abre la app desde ese dominio.'}
+TT.busy=false;save();render(1)}
+function jp(t){return(t.match(/[ぁ-ゟ゠-ヿ一-鿿ー、。！？]+/g)||[]).join(' ')}
+function listen(){const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){toast('Tu navegador no admite reconocimiento de voz. Prueba con Chrome');return}if(TT.mic)return;const r=new SR();r.lang=TT.lang;r.interimResults=false;TT.mic=true;render(1);
+r.onresult=e=>{TT.draft=e.results[0][0].transcript};r.onerror=e=>{toast(e.error=='not-allowed'?'Permite el micrófono para poder hablar':'No te escuché, intenta de nuevo')};
+r.onend=()=>{TT.mic=false;if(TT.draft&&TT.draft.trim()&&TT.voice)ask();else render(1)};try{r.start()}catch(e){TT.mic=false;render(1)}}
+function setupCv(){const c=document.getElementById('cv');if(!c)return;const x=c.getContext('2d'),cs=getComputedStyle(document.documentElement);x.clearRect(0,0,300,300);x.font='200px "Shippori Mincho",serif';x.textAlign='center';x.textBaseline='middle';x.fillStyle=cs.getPropertyValue('--bd');x.fillText(R.wc,150,160);x.strokeStyle=cs.getPropertyValue('--tx');x.lineWidth=8;x.lineCap='round';x.lineJoin='round';let d=false;const p=e=>{const b=c.getBoundingClientRect();return[(e.clientX-b.left)*300/b.width,(e.clientY-b.top)*300/b.height]};
+c.onpointerdown=e=>{d=true;c.setPointerCapture(e.pointerId);x.beginPath();x.moveTo(...p(e))};c.onpointermove=e=>{if(d){x.lineTo(...p(e));x.stroke()}};c.onpointerup=()=>{d=false}}
+async function rec(t){try{speak(t);const s=await navigator.mediaDevices.getUserMedia({audio:true}),m=new MediaRecorder(s),ch=[];m.ondataavailable=e=>ch.push(e.data);m.onstop=()=>{s.getTracks().forEach(k=>k.stop());new Audio(URL.createObjectURL(new Blob(ch))).play();toast('Esta es tu voz. Compárala con el modelo')};setTimeout(()=>{m.start();toast('Grabando 3 segundos…');setTimeout(()=>m.stop(),3000)},1200)}catch(e){toast('No hay acceso al micrófono')}}
+function vSet(){return`<h1>Ajustes</h1><h2>Tema</h2><div class=opts style="grid-template-columns:1fr 1fr 1fr">${[["auto","Sistema"],["light","Claro"],["dark","Oscuro"]].map(x=>`<button class="opt ${S.theme==x[0]?"ok":""}" data-a=theme data-v=${x[0]}>${x[1]}</button>`).join("")}</div>
+<h2>Tus datos</h2><div class=card><p class=mu>Tu progreso se guarda solo en este navegador. La voz usa el motor de síntesis de tu dispositivo, y sus resultados varían según el sistema.</p><button class="btn alt" data-a=reset>Borrar todo el progreso</button></div>`}
+function render(keep){document.documentElement.dataset.theme=S.theme=="auto"?"":S.theme;const due=dueList().length,vw=V=="lesson"?vLesson():V=="path"?vPath():V=='read'?vRead():V=='tutor'?vTutor():V=="rev"?vRev():V=="stats"?vStats():V=="set"?vSet():vHome();
+$("#m").innerHTML=vw;$("#n").innerHTML=[['home','Inicio'],['path','Ruta'],['read','Leer'],["rev","Repaso"],['tutor','Tutor'],["stats","Progreso"]].map(x=>`<button class="${V==x[0]||(V=='lesson'&&x[0]==(R&&R.l.type=='read'?'read':'path'))?"on":""}" data-a=go data-v=${x[0]}>${x[1]}${x[0]=="rev"&&due?`<em>${due}</em>`:""}</button>`).join("");if(!keep)window.scrollTo(0,0);setupCv()}
+document.addEventListener("click",e=>{tick();const b=e.target.closest("[data-a]");if(!b||b.disabled)return;const a=b.dataset.a,v=b.dataset.v;
+if(a=="go"){V=v=='path'&&R&&R.l.type=='read'?'read':v;R=null;RV=null;render()}else if(a=="say")speak(v);else if(a=="open"){R={l:ALL.find(l=>l.id==v),step:'intro'};V='lesson';render()}else if(a=='tk'){R.sel=v.split(',').map(Number);render(1)}else if(a=='tr'){R.tr=!R.tr;render(1)}else if(a=='sv'){const t=R.l.L[R.sel[0]][0][R.sel[1]];S.sv[t[0]]=[t[1],t[2]];S.cards['s:'+t[0]]=S.cards['s:'+t[0]]||{d:Date.now(),i:0,e:2.5,n:0};save();toast('Guardada en el repaso');render(1)}
+else if(a=="start"){R.step="quiz";R.qs=build(R.l);R.n=R.qs.length;R.qi=0;R.ok=0;R.ans=null;render()}else if(a=="pick")pick(+v);else if(a=="next")nextQ();
+else if(a=="show"){RV.show=true;render()}else if(a=="grade")grade(+v);else if(a=='wc'){R.wc=v;speak(v);render(1)}else if(a=='cl')setupCv();else if(a=='rec')rec(v);else if(a=='vm'){TT.voice=!TT.voice;toast(TT.voice?'Modo voz: te escucho y respondo hablando':'Modo voz desactivado');render(1)}else if(a=='lg'){TT.lang=v;render(1)}else if(a=='mic')listen();else if(a=='ask')ask();else if(a=="theme"){S.theme=v;save();render()}
+else if(a=="reset"&&confirm("¿Borrar todo tu progreso? No se puede deshacer.")){S=def();save();V="home";render()}});
+after();render();
+if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
+</script></body></html>
